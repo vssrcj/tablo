@@ -1,0 +1,26 @@
+{
+  "name": "tablo",
+  "version": "0.1.0",
+  "author": "CJ",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vssrcj/tablo.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vssrcj/tablo/issues"
+  },
+  "homepage": "https://github.com/vssrcj/tablo#readme",
+  "dependencies": {
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-1": "^6.13.0"
+  }
+}

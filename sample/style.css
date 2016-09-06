@@ -1,0 +1,113 @@
+.tablo--container {
+  margin: 0 10px;
+  box-sizing: border-box;
+}
+.tablo {
+  border-collapse: collapse;
+  width: 100%;
+}
+.tablo .select {
+  width: 30px;
+}
+.tablo .add {
+  width: 48px;
+}
+.tablo .add i {
+  cursor: pointer;
+  vertical-align: middle;
+}
+.tablo .add i:hover {
+  color: #0a2c45 !important;
+}
+.tablo .empty {
+  width: 16px;
+}
+.tablo .head {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.tablo .head-text {
+  flex: 1;
+}
+.tablo .first-col {
+  display: flex;
+}
+.tablo .head-input {
+  min-width: 40px;
+  width: 100%;
+  padding: 10px 0;
+  outline: none;
+  border: none;
+}
+.tablo .edit,
+.tablo .close {
+  color: #eee;
+  font-size: 16px;
+  vertical-align: middle;
+  padding: 3px;
+}
+.tablo tbody tr:last-child {
+  border-bottom: none;
+}
+.tablo tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+.tablo tr:hover .edit,
+.tablo tr:hover .close {
+  color: #0a2c45;
+  cursor: pointer;
+}
+.tablo th,
+.tablo td {
+  text-align: left;
+}
+.tablo th {
+  color: #9e9e9e;
+  font-size: 14px;
+  font-weight: 100;
+  white-space: nowrap;
+}
+.tablo td {
+  padding: 7px 2px;
+  font-size: 15px;
+}
+.tablo .sort {
+  font-size: 16px;
+  cursor: pointer;
+  float: right;
+  padding: 9px 7px;
+  margin-right: 4px;
+}
+.tablo .sort.active {
+  color: #0a2c45;
+}
+.tablo .sort:hover {
+  color: #0a2c45;
+}
+.tablo .paging {
+  margin: 0 2px;
+  padding: 4px 8px;
+}
+.tablo .paging.selected {
+  background: #0a2c45;
+  color: #fff;
+}
+.tablo .paging:not(.selected) {
+  cursor: pointer;
+}
+.tablo .paging:not(.selected):hover {
+  background: #ccc;
+}
+.tablo .footer-container {
+  display: flex;
+  align-items: center;
+}
+.tablo .footer-cell {
+  padding: 16px 8px;
+  vertical-align: middle;
+}
+.tablo .entries-display {
+  margin-left: auto;
+  font-size: 13px;
+}
