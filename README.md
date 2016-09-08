@@ -20,7 +20,7 @@ npm install tablo
 
 ### Styling
 
-You must reference the **style.css** that comes in the tablo directory in some way.  
+You must reference the **style.css** stylesheet that comes in the tablo directory in some way.  
 You can change this file to suit your styling needs, or make the changes under the class name *tablo*.
 
 ### Google Icons
