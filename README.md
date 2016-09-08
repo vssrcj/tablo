@@ -53,11 +53,22 @@ const Example = () => (
 
 ```
 
-## Other Options
+#### Optional parameters
+
+The following properties are non-mandatory:
+
+If you pass one property in a table, you must pass all the properties.
+You can only only pass properties of one table;
 
 | Parameter Name | Data Type | Description |
 | --- | --- | --- |
-| onCreate | function | |
-| onCreate | onCreate | First parameter is the item clicked on |
-| onCreate | onCreate | |
+| onCreate | function | When the create button is clicked - no parameter |
+| onUpdate | function | First parameter is the item clicked on |
+| onDelete | function | First parameter is the item clicked on |
 
+| Parameter Name | Data Type | Description |
+| --- | --- | --- |
+| onSelect | function | First parameter is the item clicked on|
+| selected | string / int | The id of the selected item |
+
+#### Optional 
