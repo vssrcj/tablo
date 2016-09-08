@@ -53,7 +53,7 @@ const Example = () => (
 
 ```
 
-#### Optional parameters
+#### Optional properties
 
 The following properties are non-mandatory:
 
@@ -70,5 +70,3 @@ You can only only pass properties of one table;
 | --- | --- | --- |
 | onSelect | function | First parameter is the item clicked on|
 | selected | string / int | The id of the selected item |
-
-#### Optional 
