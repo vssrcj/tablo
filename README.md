@@ -30,7 +30,7 @@ You are required to link the Google Material Icons.  You can link to it somewher
 
 ```jsx
 import React from 'react';
-import Tablo from './MyAwesomeReactComponent';
+import Tablo from 'tablo';
 
 const users = [
   { id: 0, name: "Ivana Burnett", country: "Uzbekistan" }, 
@@ -52,3 +52,12 @@ const Example = () => (
 );
 
 ```
+
+## Other Options
+
+| Parameter Name | Data Type | Description |
+| --- | --- | --- |
+| onCreate | function | |
+| onCreate | onCreate | First parameter is the item clicked on |
+| onCreate | onCreate | |
+
