@@ -18,6 +18,11 @@ Tablo is available as an [npm package](https://www.npmjs.org/package/tablo).
 npm install tablo
 ```
 
+### Styling
+
+You must reference the **style.css** that comes in the tablo directory in some way.  
+You can change this file to suit your styling needs, or make the changes under the class name *tablo*.
+
 ### Google Icons
 
 You are required to link the Google Material Icons.  You can link to it somewhere in your html, as in the following example:
