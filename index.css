@@ -39,6 +39,7 @@
   padding: 10px 0;
   outline: none;
   border: none;
+  background: inherit;
 }
 .tablo .edit,
 .tablo .close {
@@ -73,14 +74,15 @@
   font-size: 15px;
 }
 .tablo .sort {
-  font-size: 16px;
+  font-size: 17px;
   cursor: pointer;
   float: right;
   padding: 9px 7px;
   margin-right: 4px;
 }
 .tablo .sort.active {
-  color: #0a2c45;
+   color: #0a2c45;
+   font-weight: 900;
 }
 .tablo .sort:hover {
   color: #0a2c45;
@@ -88,6 +90,10 @@
 .tablo .paging {
   margin: 0 2px;
   padding: 4px 8px;
+}
+.tablo .export {
+  background: #ddd;
+  margin-left: 10px;
 }
 .tablo .paging.selected {
   background: #0a2c45;
@@ -110,4 +116,44 @@
 .tablo .entries-display {
   margin-left: auto;
   font-size: 13px;
+}
+.tablo .selections {
+   width: 200px;
+   position: absolute;
+   top: -23px;
+   background: #fff;
+   box-shadow: rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px;
+}
+.tablo .clear {
+   padding: 0.5em;
+   font-style: italic;
+   font-size: 12px;
+   cursor: pointer;
+}
+.tablo .filters {
+   background: #eee;
+}
+.tablo .title {
+   display: none;
+   font-size: 12px;
+   font-weight: 900;
+   color: #666;
+   margin: 0 0.62em;
+}
+.tablo .selection {
+   padding: 0.5em;
+   cursor: pointer;
+}
+.tablo .selection:hover {
+   background: #eee;
+}
+.tablo .input-display {
+   border: 1px solid #ddd;
+   cursor: pointer;
+}
+.tablo .filters .selection:hover {
+   background: #ddd;
+}
+.tablo .filters .selection::before {
+   content: "x ";
 }

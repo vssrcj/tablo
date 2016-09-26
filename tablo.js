@@ -1,289 +1,330 @@
-import React from "react";
+/*eslint-disable no-unused-vars*/
+import React, { Component } from "react";
 
-const TABLE_TYPE = {
-   SIMPLE: 0,
-   EDIT: 1,
-   SELECT: 2
-};
+import Filter from "./filter";
+/*eslint-enable no-unused-vars*/
 
-export default class Tablo extends React.Component {
+import { sortItems, filterItems, getValue, exportTable } from "./utils";
+
+export default class Table extends Component {
 
    constructor(props) {
       super(props);
+
+      const { sort, trimmed } = props.sort ?
+      {
+         sort: props.sort,
+         trimmed: sortItems(props.items, sort.key, sort.asc)
+      } :
+      {
+         sort: { key: null, asc: true },
+         trimmed: props.items
+      };
+
       this.state = {
-         sort: props.sort ? props.sort : {
-            id: null,
-            asc: true
-         },
-         type: props.onSelect ? TABLE_TYPE.SELECT : ( props.onCreate ? TABLE_TYPE.EDIT : TABLE_TYPE.SIMPLE ),
-         items: props.items,
-         filtered: props.sort ? this.sortTable(props.sort.id, props.sort.asc, props.items) : props.items,
-         page: 1,
-         columns: props.columns.map(column => ({ ...column, search: "" }))
-      }
+         // id - the id of the sorted column
+         // asc - if values in the column is ascending
+         sort,
+
+         // the filtered and sorted items
+         trimmed,
+
+         // index of current page
+         page: 0,
+
+         columns: props.columns.map(column => {
+            const extras = column.sortable === true || column.sortabel === undefined ?
+               { sortable: true } : { };
+
+            const sortable = column.sortable || column.sortable === undefined;
+
+            if(column.filterable) {
+               const filters = [ ... new Set(props.items.map(i => i[column.key])) ];
+               return {
+                  ...column,
+                  ...extras,
+                  selections: [],
+                  filters,
+                  sortable
+               };
+            }
+
+            else if(column.searchable === true || column.searchable === undefined) return {
+               ...column,
+               ...extras,
+               search: "",
+               searchable: true,
+               sortable
+            };
+
+            return {
+               ...column,
+               ...extras,
+               sortable
+            };
+         })
+      };
    }
 
-   setSort = id => {
-      const { sort, filtered } = this.state;
+   /*
+    * Sets the current sorted column, and sort the trimmed items
+    */
+   setSort = key => {
+      const { sort, trimmed } = this.state;
 
-      const asc = sort.id === id ? !sort.asc : true;
+      const asc = sort.key === key ? !sort.asc : true;
 
-      const sorted = this.sortTable(id, asc, filtered);
+      const sorted = sortItems(trimmed, key, asc);
 
-      this.setState({ sort: { id, asc }, filtered: sorted });
+      this.setState({ sort: { key, asc }, filtered: sorted });
    };
 
-   filterTable = (items, columns) => {
+   /*
+    * Sets the search term of a column, and then filter and sort the all items
+    */
+   setSearch = (key, search) => {
 
-      const searchAbles = columns.filter(c => c.search !== "");
-      return items.filter(item => {
-         for(var i in searchAbles) {
-            let { id, search } = searchAbles[i];
-            let val = item[id];
-            search = search.toLowerCase();
+      const { columns, sort } = this.state;
 
-            if (typeof val === "string") {
-               val = val.toLowerCase();
-               if (val.indexOf(search) < 0) return false;
-            }
-            else if (typeof val === "boolean") {
-               if(val) {
-                  if(search != "1" && ("true").indexOf(search) < 0) return false;
-               }
-               else {
-                  if(search != "0" && ("false").indexOf(search) < 0) return false;
-               }
-            }
-            else if (typeof val === "number") {
-               var check = parseFloat(search);
-               if(isNaN(check)) return false;
-               if(check !== val) return false;
-            }
-            else return false;
-         }
-         return true;
-      });
+      const { items } = this.props;
+
+      // adds search to the column corresponding to the key paramater
+      const newColumns = columns.map(x => x.key === key ? { ...x, search } : x);
+
+      let trimmed = filterItems(items, newColumns);
+
+      if(sort.key !== null) trimmed = sortItems(trimmed, sort.key, sort.asc);
+
+      this.setState({ columns: newColumns, page: 0, trimmed });
    };
 
-   sortTable = (id, asc, filtered) => {
-
-      const L = asc ? -1 : 1;
-      const R = asc ? 1 : -1;
-      return filtered.sort((a, b) => {
-         let A = a[id];
-         if(typeof A === "string") A = A.toUpperCase();
-         let B = b[id];
-         if(typeof B === "string") B = B.toUpperCase();
-         if(A < B) return L;
-         if(A > B) return R;
-         else return 0;
-      });
-   };
-
-   setSearch = (id, search) => {
-
-      const { items, columns } = this.state;
-
-      const newColumns = columns.map(x => x.id === id ? { ...x, search } : x);
-
-      const filtered = this.filterTable(items, newColumns);
-
-      this.setState({ columns: newColumns, page: 1, filtered });
-   };
-
+   /*
+    * When new items are passed as props, filter and sort them, and
+    * add them to the state.
+    */
    componentWillReceiveProps(nextProps) {
-      const { sort: { id, asc }, columns } = this.state;
+
+      const { sort: { key, asc }, columns } = this.state;
+
       const { items } = nextProps;
 
-      let filtered = this.filterTable(items, columns);
+      let filtered = filterItems(items, columns);
 
-      if(id !== null) filtered = this.sortTable(id, asc, filtered);
+      if(key !== null) filtered = sortItems(filtered, key, asc);
 
-      this.setState({ filtered, items });
+      this.setState({ filtered });
    }
 
    renderFooter = colSpan => {
-      const { items, filtered, page } = this.state;
-      const { limit } = this.props;
+      const { trimmed, page, columns } = this.state;
+      const { limit, items, name } = this.props;
 
-      const pages = parseInt((filtered.length - 1)/limit) + 1;
+      const pages = parseInt((trimmed.length - 1)/limit) + 1;
 
       const itemsCount = items.length;
-      const filteredCount = filtered.length;
+      const filteredCount = trimmed.length;
 
-      let first = (page - 1) * limit + 1;
-      const lastCalc = page * limit;
-      const last = filteredCount < lastCalc ? filteredCount : lastCalc;
+      // description shows the paging information
+      let description;
 
-      const showLast = itemsCount === filteredCount ? "" : `  (filtered from ${itemsCount} entries)`;
-      const showMiddle = filteredCount < limit ? "" : `to ${last} `;
-
-      if(filteredCount === 0) first = 0;
-
-      const description = (
-         <span className="entries-display">
-            {`Showing ${first} ${showMiddle}of ${filteredCount} entries${showLast}`}
-         </span>
-      );
-
-      if(pages === 1) return (
-         <td className="footer-cell" colSpan={colSpan}>
-            { description }
-         </td>
-      );
-
-      let firstDots = false;
-      let secondDots = false;
-
-      let p = [];
-      for(let i =0; i< pages; i++) {
-        p.push(i);
+      if(itemsCount <= limit) {
+         if(itemsCount != filteredCount) {
+            description = `Showing ${filteredCount} entries (filtered from ${itemsCount} entries)`;
+         }
+         else {
+            description = `Showing ${itemsCount} entries`;
+         }
       }
-      const paging = p.map(item => {
-         if(item + 1 === page)
-            return <span key={item} className="paging selected">{item}</span>;
+      else {
+         const first = page * limit + 1;
+         const lastLimit = (page + 1) * limit;
+         const last = filteredCount < lastLimit ? filteredCount : lastLimit;
+         if(itemsCount != filteredCount) {
+            description = `Showing ${first} to ${last} of ${filteredCount} entries (filtered from ${itemsCount} entries)`;
+         }
+         else {
+            description = `Showing ${first} to ${last} of ${itemsCount} entries`;
+         }
+      }
 
-         else if(item === 0 || item === page || item + 2 === page)
-            return <span key={item} className="paging" onClick={() => this.setPage(item + 1)}>{item}</span>;
+      const descriptionGroup =
+         <span className="entries-display">
+            {description}
+         </span>;
 
-         else if((item < page) && !firstDots) {
-            firstDots = true;
-            return <span key={item}>...</span>;
+      const exportButton = this.props.noExport ? null :
+         <span onClick={() => exportTable(items, columns, name)} className="paging export">Export</span>;
+
+      let paging = null;
+
+      if(pages > 1) {
+
+         let firstDots = false;
+         let secondDots = false;
+
+         let pageArray = [];
+         for(let i=0; i < pages; i++) {
+            pageArray.push(i);
          }
 
-         else if((item > page) && !secondDots) {
-            secondDots = true;
-            return <span key={item}>...</span>;
-         }
+         paging = pageArray.map(i => {
+            if(i === page)
+               return <span key={i} className="paging selected">{i + 1}</span>;
 
-         else return null;
-      })
+            else if(i === 0 || i === page-1 || i === page+1)
+               return <span key={i} className="paging" onClick={() => this.setPage(i)}>{i + 1}</span>;
+
+            else if((i < page) && !firstDots) {
+               firstDots = true;
+               return <span className="dots" key={i}>...</span>;
+            }
+
+            else if((i > page) && !secondDots) {
+               secondDots = true;
+               return <span className="dots" key={i}>...</span>;
+            }
+
+            else return null;
+         });
+      }
 
       return (
          <td className="footer-cell" colSpan={colSpan}>
             <div className="footer-container">
                { paging }
-               { description }
+               { exportButton }
+               { descriptionGroup }
             </div>
          </td>
       );
-   };
+   }
 
+   /*
+    * sets the complete selections for a column.
+    */
+   setSelections = (columnId, selections) => {
+
+      const { items } = this.props;
+
+      const columns = this.state.columns.map(column => {
+         if(column.key == columnId) {
+            return {
+               ...column,
+               selections
+            };
+         }
+         return column;
+      });
+      const trimmed = filterItems(items, columns);
+
+      this.setState({ columns, trimmed, page: 0 });
+   }
+
+   /*
+    * as clear as it comes
+    */
    setPage = page => this.setState({ page });
 
-   renderFirstHeader = type => {
-      switch (type) {
-         case TABLE_TYPE.SIMPLE:
-            return null;
-         case TABLE_TYPE.EDIT:
-            return (
-               <th className="add">
-                  <i className="material-icons" onClick={() => this.props.onCreate()}>add</i>
-               </th>
-            );
-         case TABLE_TYPE.SELECT:
-            return (
-               <th className="select">
-               </th>
-            );
-      }
-   };
+   renderColumns = (columns, sort) => (
+      columns.map((column, index) => {
 
-   renderColumns = (columns, sort) => {
-      return columns.map(column => (
-         <th key={column.id}>
-            <div className="head">
-               <div className="head-text"> {
-                  column.format === undefined ? (
-                     <input type="text"
-                     onChange={(event) => this.setSearch(column.id, event.target.value)}
-                     className="head-input"
-                     placeholder={column.name}
-                     value={column.search}
-                     />
-                  ) : (
-                     <span>{column.name}</span>
-                  )
-               }
-               </div>
-               <i className="material-icons sort" onClick={() => this.setSort(column.id)}> {
-                  sort.id === column.id ? (
-                     sort.asc ? "vertical_align_bottom" : "vertical_align_top"
-                  ) : "vertical_align_center"
-               }
-               </i>
-            </div>
-         </th>
-      ));
-   };
+         // content will be added directly under a th tag
+         let content;
+         if(column.header) content = column.header;
 
-   renderFirstColumn = item => {
-      const { type } = this.state;
-      const { selected, id } = this.props;
-      switch (type) {
-         case TABLE_TYPE.SIMPLE:
-            return null;
-         case TABLE_TYPE.EDIT:
-            return (
-               <td key={0} className="first-col">
-                  <i className="material-icons edit" onClick={() => this.props.onUpdate(item)}>edit</i>
-                  <i className="material-icons close" onClick={() => this.props.onDelete(item)}>close</i>
-               </td>
-            );
-         case TABLE_TYPE.SELECT:
-            const currentId = item[id];
-            const selectedId = selected ? selected[id] : null;
-            return (
-               <td key={0} className="first-col"> {
-                  currentId === selectedId ? (
-                     <i className="material-icons" onCheck={() => {
-                         this.props.onSelect(null);
-                     }}>check_box</i>
-                  ) : (
-                     <i className="material-icons" onCheck={() => {
-                         this.props.onSelect(item);
-                     }}>check_box_outline_blank</i>
-                  )
-               }
-               </td>
-            );
-      }
-   };
+         else {
+            const sortIcon = column.sortable ? (
+               <div
+                  className={`sort${sort.key === column.key ? " active": ""}`}
+                  onClick={() => this.setSort(column.key)}
+                  dangerouslySetInnerHTML={{
+                     __html: sort.key === column.key ? ( sort.asc ? "&#x21E9;" : "&#x21E7;" ) : "&#x21F3"
+                  }}
+               />
+            ) : null;
 
-   renderBody = (items, columns, id) => {
-      return items.map((item, index) => (
-         <tr key={id ? item[id] : index}>
-            { this.renderFirstColumn(item) }
-            { columns.map(column => {
-               let value = item[column.id];
-               if(typeof valuue == "boolean") value = value ? "True" : "False";
-               return (
-                  <td key={column.id}>{value}</td>
+            const name = column.name || null;
+
+            if(column.filterable) {
+               const { filters, selections } = column;
+               content = (
+                  <Filter
+                     sortIcon={selections.length == 1 ? null : sortIcon}
+                     filters={filters}
+                     selections={selections}
+                     setSelections={selections => this.setSelections(column.key, selections)}
+                     name={name}
+                  />
                );
-            })}
-         </tr>
-      ));
-   };
+            }
+
+            else {
+
+               const search = column.searchable ? (
+                  <div className="head-text">
+                     <input type="text"
+                        onChange={event => this.setSearch(column.key, event.target.value)}
+                        className="head-input"
+                        placeholder={name}
+                        value={column.search}
+                     />
+                  </div>
+               ) : <div className="head-text">{name}</div>;
+
+               content = (
+                  <div className="head">
+                     { search }
+                     { column.sortable && (!column.filterable || column.selections.length !== 1) ? sortIcon : null }
+                  </div>
+               );
+            }
+         }
+
+         return (
+            <th key={index} style={column.width ? { width: column.width } : {}}>
+               { content }
+            </th>
+         );
+      })
+   );
+
+   renderBody = (items, columns, key) => (
+      items.map((item, index) => {
+         return (
+            <tr key={key ? getValue(item, key) : index}>
+               {
+                  columns.map((column, c) => {
+                     if(column.component) return <td key={c}>{column.component(item)}</td>;
+                     let value = getValue(item, column.key);
+                     if(typeof value == "boolean") value = value ? "True" : "False";
+                     return (
+                        <td key={column.key}>{value}</td>
+                     );
+                  })
+               }
+            </tr>
+         );
+      })
+   );
 
    render() {
 
-      const { id, limit, onCreate, onSelect, onUpdate, onDelete, noPaper } = this.props;
-      const { columns, sort, filtered, page, type } = this.state;
-      const items = filtered.slice((page - 1) * limit, page * limit);
+      const { id, limit } = this.props;
+      const { columns, sort, trimmed, page } = this.state;
+      const items = trimmed.slice(page * limit, (page + 1) * limit);
 
       return (
          <div className="tablo--container">
             <table className="tablo">
                <thead>
                   <tr>
-                     { this.renderFirstHeader(type) }
                      { this.renderColumns(columns, sort) }
                   </tr>
                </thead>
                <tbody>
                   { this.renderBody(items, columns, id) }
-                  <tr key={0}>
-                     { this.renderFooter(columns.length + (TABLE_TYPE === TABLE_TYPE.SIMPLE ? 0 : 1)) }
+                  <tr key={-1}>
+                     { this.renderFooter(columns.length) }
                   </tr>
                </tbody>
             </table>
