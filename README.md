@@ -76,8 +76,7 @@ filterable | (optional) if the column is filterable
 header | (optional) this is a react component to replace the display name of the column, as in:<br/> ```const simpleComponent = <div>A complex<em>header</em></div>```
 sortable | (optional) if the column is sortable
 width | specify the fixed width of a column
-component | a function that takes the corresponding item as the paramater.  A valid react component must be returned.
-A simple example of such a function is:<br/>  ```const simpleFunction = item => <div>{item.prop1}</div>;```
+component | a function that takes the corresponding item as the paramater.  A valid react component must be returned. <br/>A simple example of such a function is:<br/>  ```const simpleFunction = item => <div>{item.prop1}</div>;```
 
 ****Notes
 
