@@ -57,26 +57,22 @@ Parameter Name | Description
 --- | ---
 items | an array of objects that acts as the rows of the table
 columns | an array of objects that specify the columns of the table, and how the rows must be displayed
-limit | the number of entries you want to have displayed per page (defaults to 15)
+limit | (optional: defaults to 15) the number of entries you want to have displayed per page
 key | the key that is unique for each item in items array 
-exportName	| only specify this if you want the table to be exportable. This will then be used as the file name
-sort | specifies the sorted column at render : an object of { key, asc } where key corresponds to the sorted column, and asc whether or not it is ascending
+exportName	| (optional) only specify this if you want the table to be exportable. This will then be used as the file name
+sort | (optional) specifies the sorted column at render : an object of { **key**, **asc** } where **key** corresponds to the sorted column, and **asc** whether or not it is ascending
 
 
-#### Optional properties
+#### Column properties
 
-The following properties are non-mandatory:
+The following properties can be added to the columns property of the table
 
-If you pass one property in a table, you must pass all the properties.
-You can only only pass properties of one table;
+Parameter Name | Description
+--- | ---
+key | the key that correspons to the value you want to display of each item in this column. Note that the values in the rows may only be strings or numbers
+name | the display name of the column
+specify a maximum of one of the following properties
+searchable | if the column is searchable
+filterable | if the column is filterable
+header | this is a react component to replace the display name of the column *ex:   ```jsx const simpleComponent = <div>A complex <em>header</em></div>```*
 
-| Parameter Name | Data Type | Description |
-| --- | --- | --- |
-| onCreate | function | When the create button is clicked - no parameter |
-| onUpdate | function | First parameter is the item clicked on |
-| onDelete | function | First parameter is the item clicked on |
-
-| Parameter Name | Data Type | Description |
-| --- | --- | --- |
-| onSelect | function | First parameter is the item clicked on|
-| selected | string / int | The id of the selected item |
