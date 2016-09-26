@@ -73,8 +73,7 @@ key | the key that correspons to the value you want to display of each item in t
 name | the display name of the column
 searchable | if the column is searchable
 filterable | if the column is filterable
-header | this is a react component to replace the display name of the column
-ex:   ```jsx 
+header | this is a react component to replace the display name of the column <br/>ex:   ```jsx 
 const simpleComponent = <div>A complex <em>header</em></div>
 ```
 
