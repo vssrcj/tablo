@@ -51,7 +51,7 @@ const Example = () => (
 
 ```
 
-#### Table properties
+### Table properties
 
 Parameter Name | Description
 --- | ---
@@ -63,7 +63,7 @@ exportName	| (optional) only specify this if you want the table to be exportable
 sort | (optional) specifies the sorted column at render : an object of { **key**, **asc** } where **key** corresponds to the sorted column, and **asc** whether or not it is ascending
 
 
-#### Column properties
+### Column properties
 
 The following properties can be added to the columns property of the table
 
@@ -78,10 +78,10 @@ sortable | (optional) if the column is sortable
 width | specify the fixed width of a column
 component | a function that takes the corresponding item as the paramater.  A valid react component must be returned. <br/>A simple example of such a function is:<br/>  ```const simpleFunction = item => <div>{item.prop1}</div>;```
 
-****Notes
+#### Notes
 
-* You can only specify at most one of: filterable, searchable, or header
+* You can only specify at most one of: **filterable**, **searchable**, or **header**
 * When you specify a key, and it references a value that is some layers deep, you may do so with the dot (.) seperator.<br/>
- Say item = { **a**: { **b**: { **c**: *61* } } } , then the "a.b.c" key of the item will return 61;
-
+ Say item = { **a**: { **b**: { **c**: ***61*** } } } , then the "a.b.c" key of item will return 61;
+* The only property passed to Tablo that may change is **items**.  Any other property won't be used or displayed.  If you do wish to use new properties, remount the Tablo component.
 
