@@ -71,7 +71,18 @@ Parameter Name | Description
 --- | ---
 key | the key that correspons to the value you want to display of each item in this column. Note that the values in the rows may only be strings or numbers
 name | the display name of the column
-searchable | if the column is searchable
-filterable | if the column is filterable
-header | this is a react component to replace the display name of the column, as in:<br/> ```const simpleComponent = <div>A complex<em>header</em></div>```
+searchable | (optional) if the column is searchable
+filterable | (optional) if the column is filterable
+header | (optional) this is a react component to replace the display name of the column, as in:<br/> ```const simpleComponent = <div>A complex<em>header</em></div>```
+sortable | (optional) if the column is sortable
+width | specify the fixed width of a column
+component | a function that takes the corresponding item as the paramater.  A valid react component must be returned.
+A simple example of such a function is:<br/>  ```const simpleFunction = item => <div>{item.prop1}</div>;```
+
+****Notes
+
+* You can only specify at most one of: filterable, searchable, or header
+* When you specify a key, and it references a value that is some layers deep, you may do so with the dot (.) seperator.<br/>
+ Say item = { **a**: { **b**: { **c**: *61* } } } , then the "a.b.c" key of the item will return 61;
+
 
