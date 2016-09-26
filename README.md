@@ -51,13 +51,17 @@ const Example = () => (
 
 ```
 
-#### Mandatory properties
+#### Table properties
 
 Parameter Name | Description
 --- | ---
 items | an array of objects that acts as the rows of the table
 columns | an array of objects that specify the columns of the table, and how the rows must be displayed
-limit | the number of entries you want to have displayed per page   [[ optional: defaults to 15 ]]
+limit | the number of entries you want to have displayed per page (defaults to 15)
+key | the key that is unique for each item in items array 
+exportName	| only specify this if you want the table to be exportable. This will then be used as the file name
+sort | specifies the sorted column at render : an object of { key, asc } where key corresponds to the sorted column, and asc whether or not it is ascending
+
 
 #### Optional properties
 
