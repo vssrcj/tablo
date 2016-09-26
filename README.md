@@ -71,7 +71,7 @@ Parameter Name | Description
 --- | ---
 key | the key that correspons to the value you want to display of each item in this column. Note that the values in the rows may only be strings or numbers
 name | the display name of the column
-specify a maximum of one of the following properties
+specify a maximum of one of the following properties |
 searchable | if the column is searchable
 filterable | if the column is filterable
 header | this is a react component to replace the display name of the column *ex:   ```jsx const simpleComponent = <div>A complex <em>header</em></div>```*
