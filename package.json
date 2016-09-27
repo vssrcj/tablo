@@ -1,9 +1,13 @@
 {
   "name": "tablo",
-  "version": "2.0.0",
+  "version": "2.2.3",
   "author": "CJ",
   "description": "",
-  "main": "index.js",
+  "main": "src/tablo.js",
+  "scripts": {
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "build": "node ./node_modules/.bin/babel src --presets es2015,stage-1 -d ./"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vssrcj/tablo.git"
@@ -19,6 +23,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-1": "^6.13.0"

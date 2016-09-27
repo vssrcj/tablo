@@ -6,7 +6,7 @@ import Filter from "./filter";
 
 import { sortItems, filterItems, getValue, exportTable } from "./utils";
 
-export default class Table extends Component {
+export default class Tablo extends Component {
 
    constructor(props) {
       super(props);
@@ -231,7 +231,7 @@ export default class Table extends Component {
          // content will be added directly under a th tag
          let content;
          if(column.header) content = column.header;
-
+         else if(column.component) content = column.name || null;
          else {
             const sortIcon = column.sortable ? (
                <div
@@ -295,6 +295,7 @@ export default class Table extends Component {
                {
                   columns.map((column, c) => {
                      if(column.component) return <td key={c}>{column.component(item)}</td>;
+
                      let value = getValue(item, column.key);
                      if(typeof value == "boolean") value = value ? "True" : "False";
                      return (
@@ -311,6 +312,7 @@ export default class Table extends Component {
 
       const { id, limit } = this.props;
       const { columns, sort, trimmed, page } = this.state;
+
       const items = trimmed.slice(page * limit, (page + 1) * limit);
 
       return (

@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 
 import { USERS } from "./USERS";
 
-import Tablo from "../index";
+import Tablo from "../src/index";
 
-import "../index.css";
+import "../src/index.css";
 
 const renderClick = item => (
    <i className="material-icons"

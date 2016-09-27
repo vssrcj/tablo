@@ -6,22 +6,6 @@
   border-collapse: collapse;
   width: 100%;
 }
-.tablo .select {
-  width: 30px;
-}
-.tablo .add {
-  width: 48px;
-}
-.tablo .add i {
-  cursor: pointer;
-  vertical-align: middle;
-}
-.tablo .add i:hover {
-  color: #0a2c45 !important;
-}
-.tablo .empty {
-  width: 16px;
-}
 .tablo .head {
   display: flex;
   width: 100%;
@@ -41,23 +25,11 @@
   border: none;
   background: inherit;
 }
-.tablo .edit,
-.tablo .close {
-  color: #eee;
-  font-size: 16px;
-  vertical-align: middle;
-  padding: 3px;
-}
 .tablo tbody tr:last-child {
   border-bottom: none;
 }
 .tablo tr {
   border-bottom: 1px solid #e0e0e0;
-}
-.tablo tr:hover .edit,
-.tablo tr:hover .close {
-  color: #0a2c45;
-  cursor: pointer;
 }
 .tablo th,
 .tablo td {
