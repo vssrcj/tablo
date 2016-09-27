@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import { USERS } from "./USERS";
 
-import Tablo from "../tablo.js";
+import Tablo from "../index";
 
 import "../index.css";
 
