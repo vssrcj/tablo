@@ -6,7 +6,8 @@
  *    then getValue(object, 'a.b.c')  -> "some value"
  */
 function recur(obj, keys, i) {
-   var val = obj[keys[i]];
+   if(obj === null) return "";
+   const val = obj[keys[i]];
    if(val === undefined) return "";
    if(keys.length === i + 1) return val;
    return recur(val, keys, i + 1);
@@ -20,8 +21,8 @@ export const sortItems = (items, key, asc) => {
    const L = asc ? -1 : 1;
    const R = asc ? 1 : -1;
    return items.sort((a, b) => {
-      const A = getValue(a, key);
-      const B = getValue(b, key);
+      const A = getValue(a, key) || "";
+      const B = getValue(b, key) || "";
       if(A < B) return L;
       if(A > B) return R;
       return 0;

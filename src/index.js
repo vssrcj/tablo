@@ -76,7 +76,7 @@ export default class Tablo extends Component {
 
       const sorted = sortItems(trimmed, key, asc);
 
-      this.setState({ sort: { key, asc }, filtered: sorted });
+      this.setState({ sort: { key, asc }, trimmed: sorted });
    };
 
    /*
@@ -108,11 +108,11 @@ export default class Tablo extends Component {
 
       const { items } = nextProps;
 
-      let filtered = filterItems(items, columns);
+      let trimmed = filterItems(items, columns);
 
-      if(key !== null) filtered = sortItems(filtered, key, asc);
+      if(key !== null) trimmed = sortItems(trimmed, key, asc);
 
-      this.setState({ filtered });
+      this.setState({ trimmed });
    }
 
    renderFooter = colSpan => {

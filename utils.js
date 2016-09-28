@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", {
  *    then getValue(object, 'a.b.c')  -> "some value"
  */
 function recur(obj, keys, i) {
+   if (obj === null) return "";
    var val = obj[keys[i]];
    if (val === undefined) return "";
    if (keys.length === i + 1) return val;
@@ -25,8 +26,8 @@ var sortItems = exports.sortItems = function sortItems(items, key, asc) {
    var L = asc ? -1 : 1;
    var R = asc ? 1 : -1;
    return items.sort(function (a, b) {
-      var A = getValue(a, key);
-      var B = getValue(b, key);
+      var A = getValue(a, key) || "";
+      var B = getValue(b, key) || "";
       if (A < B) return L;
       if (A > B) return R;
       return 0;

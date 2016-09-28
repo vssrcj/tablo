@@ -1,30 +1,12 @@
 "use strict";
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 Object.defineProperty(exports, "__esModule", {
    value: true
 });
 
-var _extends = Object.assign || function (target) {
-   for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];for (var key in source) {
-         if (Object.prototype.hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
-         }
-      }
-   }return target;
-};
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _createClass = function () {
-   function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-         var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-      }
-   }return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-   };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require("react");
 
@@ -36,37 +18,15 @@ var _filter2 = _interopRequireDefault(_filter);
 
 var _utils = require("./utils");
 
-function _interopRequireDefault(obj) {
-   return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) {
-   if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-         arr2[i] = arr[i];
-      }return arr2;
-   } else {
-      return Array.from(arr);
-   }
-}
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-function _classCallCheck(instance, Constructor) {
-   if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-   }
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) {
-   if (!self) {
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-   }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
-}
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) {
-   if (typeof superClass !== "function" && superClass !== null) {
-      throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-} /*eslint-disable no-unused-vars*/
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*eslint-disable no-unused-vars*/
 
 /*eslint-enable no-unused-vars*/
 
@@ -90,6 +50,7 @@ var Tablo = function (_Component) {
 
       var sort = _ref.sort;
       var trimmed = _ref.trimmed;
+
 
       _this.state = {
          // id - the id of the sorted column
@@ -134,12 +95,15 @@ var Tablo = function (_Component) {
     * Sets the current sorted column, and sort the trimmed items
     */
 
+
    /*
     * Sets the search term of a column, and then filter and sort the all items
     */
 
+
    _createClass(Tablo, [{
       key: "componentWillReceiveProps",
+
 
       /*
        * When new items are passed as props, filter and sort them, and
@@ -153,16 +117,18 @@ var Tablo = function (_Component) {
          var columns = _state.columns;
          var items = nextProps.items;
 
-         var filtered = (0, _utils.filterItems)(items, columns);
 
-         if (key !== null) filtered = (0, _utils.sortItems)(filtered, key, asc);
+         var trimmed = (0, _utils.filterItems)(items, columns);
 
-         this.setState({ filtered: filtered });
+         if (key !== null) trimmed = (0, _utils.sortItems)(trimmed, key, asc);
+
+         this.setState({ trimmed: trimmed });
       }
 
       /*
        * sets the complete selections for a column.
        */
+
 
       /*
        * as clear as it comes
@@ -180,9 +146,36 @@ var Tablo = function (_Component) {
          var trimmed = _state2.trimmed;
          var page = _state2.page;
 
+
          var items = trimmed.slice(page * limit, (page + 1) * limit);
 
-         return _react2.default.createElement("div", { className: "tablo--container" }, _react2.default.createElement("table", { className: "tablo" }, _react2.default.createElement("thead", null, _react2.default.createElement("tr", null, this.renderColumns(columns, sort))), _react2.default.createElement("tbody", null, this.renderBody(items, columns, id), _react2.default.createElement("tr", { key: -1 }, this.renderFooter(columns.length)))));
+         return _react2.default.createElement(
+            "div",
+            { className: "tablo--container" },
+            _react2.default.createElement(
+               "table",
+               { className: "tablo" },
+               _react2.default.createElement(
+                  "thead",
+                  null,
+                  _react2.default.createElement(
+                     "tr",
+                     null,
+                     this.renderColumns(columns, sort)
+                  )
+               ),
+               _react2.default.createElement(
+                  "tbody",
+                  null,
+                  this.renderBody(items, columns, id),
+                  _react2.default.createElement(
+                     "tr",
+                     { key: -1 },
+                     this.renderFooter(columns.length)
+                  )
+               )
+            )
+         );
       }
    }]);
 
@@ -197,11 +190,12 @@ var _initialiseProps = function _initialiseProps() {
       var sort = _state3.sort;
       var trimmed = _state3.trimmed;
 
+
       var asc = sort.key === key ? !sort.asc : true;
 
       var sorted = (0, _utils.sortItems)(trimmed, key, asc);
 
-      _this2.setState({ sort: { key: key, asc: asc }, filtered: sorted });
+      _this2.setState({ sort: { key: key, asc: asc }, trimmed: sorted });
    };
 
    this.setSearch = function (key, search) {
@@ -233,6 +227,7 @@ var _initialiseProps = function _initialiseProps() {
       var items = _props2.items;
       var name = _props2.name;
 
+
       var pages = parseInt((trimmed.length - 1) / limit) + 1;
 
       var itemsCount = items.length;
@@ -258,11 +253,19 @@ var _initialiseProps = function _initialiseProps() {
          }
       }
 
-      var descriptionGroup = _react2.default.createElement("span", { className: "entries-display" }, description);
+      var descriptionGroup = _react2.default.createElement(
+         "span",
+         { className: "entries-display" },
+         description
+      );
 
-      var exportButton = _this2.props.noExport ? null : _react2.default.createElement("span", { onClick: function onClick() {
-            return (0, _utils.exportTable)(items, columns, name);
-         }, className: "paging export" }, "Export");
+      var exportButton = _this2.props.noExport ? null : _react2.default.createElement(
+         "span",
+         { onClick: function onClick() {
+               return (0, _utils.exportTable)(items, columns, name);
+            }, className: "paging export" },
+         "Export"
+      );
 
       var paging = null;
 
@@ -278,24 +281,51 @@ var _initialiseProps = function _initialiseProps() {
             }
 
             paging = pageArray.map(function (i) {
-               if (i === page) return _react2.default.createElement("span", { key: i, className: "paging selected" }, i + 1);else if (i === 0 || i === page - 1 || i === page + 1) return _react2.default.createElement("span", { key: i, className: "paging", onClick: function onClick() {
-                     return _this2.setPage(i);
-                  } }, i + 1);else if (i < page && !firstDots) {
+               if (i === page) return _react2.default.createElement(
+                  "span",
+                  { key: i, className: "paging selected" },
+                  i + 1
+               );else if (i === 0 || i === page - 1 || i === page + 1) return _react2.default.createElement(
+                  "span",
+                  { key: i, className: "paging", onClick: function onClick() {
+                        return _this2.setPage(i);
+                     } },
+                  i + 1
+               );else if (i < page && !firstDots) {
                   firstDots = true;
-                  return _react2.default.createElement("span", { className: "dots", key: i }, "...");
+                  return _react2.default.createElement(
+                     "span",
+                     { className: "dots", key: i },
+                     "..."
+                  );
                } else if (i > page && !secondDots) {
                   secondDots = true;
-                  return _react2.default.createElement("span", { className: "dots", key: i }, "...");
+                  return _react2.default.createElement(
+                     "span",
+                     { className: "dots", key: i },
+                     "..."
+                  );
                } else return null;
             });
          })();
       }
 
-      return _react2.default.createElement("td", { className: "footer-cell", colSpan: colSpan }, _react2.default.createElement("div", { className: "footer-container" }, paging, exportButton, descriptionGroup));
+      return _react2.default.createElement(
+         "td",
+         { className: "footer-cell", colSpan: colSpan },
+         _react2.default.createElement(
+            "div",
+            { className: "footer-container" },
+            paging,
+            exportButton,
+            descriptionGroup
+         )
+      );
    };
 
    this.setSelections = function (columnId, selections) {
       var items = _this2.props.items;
+
 
       var columns = _this2.state.columns.map(function (column) {
          if (column.key == columnId) {
@@ -347,32 +377,61 @@ var _initialiseProps = function _initialiseProps() {
                });
             } else {
 
-               var search = column.searchable ? _react2.default.createElement("div", { className: "head-text" }, _react2.default.createElement("input", { type: "text",
-                  onChange: function onChange(event) {
-                     return _this2.setSearch(column.key, event.target.value);
-                  },
-                  className: "head-input",
-                  placeholder: name,
-                  value: column.search
-               })) : _react2.default.createElement("div", { className: "head-text" }, name);
+               var search = column.searchable ? _react2.default.createElement(
+                  "div",
+                  { className: "head-text" },
+                  _react2.default.createElement("input", { type: "text",
+                     onChange: function onChange(event) {
+                        return _this2.setSearch(column.key, event.target.value);
+                     },
+                     className: "head-input",
+                     placeholder: name,
+                     value: column.search
+                  })
+               ) : _react2.default.createElement(
+                  "div",
+                  { className: "head-text" },
+                  name
+               );
 
-               content = _react2.default.createElement("div", { className: "head" }, search, column.sortable && (!column.filterable || column.selections.length !== 1) ? sortIcon : null);
+               content = _react2.default.createElement(
+                  "div",
+                  { className: "head" },
+                  search,
+                  column.sortable && (!column.filterable || column.selections.length !== 1) ? sortIcon : null
+               );
             }
          }
 
-         return _react2.default.createElement("th", { key: index, style: column.width ? { width: column.width } : {} }, content);
+         return _react2.default.createElement(
+            "th",
+            { key: index, style: column.width ? { width: column.width } : {} },
+            content
+         );
       });
    };
 
    this.renderBody = function (items, columns, key) {
       return items.map(function (item, index) {
-         return _react2.default.createElement("tr", { key: key ? (0, _utils.getValue)(item, key) : index }, columns.map(function (column, c) {
-            if (column.component) return _react2.default.createElement("td", { key: c }, column.component(item));
+         return _react2.default.createElement(
+            "tr",
+            { key: key ? (0, _utils.getValue)(item, key) : index },
+            columns.map(function (column, c) {
+               if (column.component) return _react2.default.createElement(
+                  "td",
+                  { key: c },
+                  column.component(item)
+               );
 
-            var value = (0, _utils.getValue)(item, column.key);
-            if (typeof value == "boolean") value = value ? "True" : "False";
-            return _react2.default.createElement("td", { key: column.key }, value);
-         }));
+               var value = (0, _utils.getValue)(item, column.key);
+               if (typeof value == "boolean") value = value ? "True" : "False";
+               return _react2.default.createElement(
+                  "td",
+                  { key: column.key },
+                  value
+               );
+            })
+         );
       });
    };
 };
