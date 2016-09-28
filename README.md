@@ -1,7 +1,7 @@
 # Tablo
 [![npm package](https://img.shields.io/npm/v/tablo.svg?style=flat-square)](https://www.npmjs.org/package/tablo)
 
-Tablo is a [React](http://facebook.github.io/react/) table component. Check it on this playground [here](https://output.jsbin.com/vebulelogu).
+Tablo is a [React](http://facebook.github.io/react/) table component. Check it on this playground [here](https://output.jsbin.com/tutegi/1).
 
 #### It has the following features
  * filtering or searching by column
