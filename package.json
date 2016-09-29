@@ -1,6 +1,6 @@
 {
   "name": "tablo",
-  "version": "2.2.5",
+  "version": "2.2.7",
   "author": "CJ",
   "description": "",
   "main": "src/tablo.js",
@@ -17,7 +17,7 @@
     "url": "https://github.com/vssrcj/tablo/issues"
   },
   "homepage": "https://github.com/vssrcj/tablo#readme",
-  "dependencies": {
+  "peerDependencies": {
     "react": "^15.3.1",
     "react-dom": "^15.3.1"
   },
