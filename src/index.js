@@ -152,8 +152,9 @@ export default class Tablo extends Component {
             {description}
          </span>;
 
-      const exportButton = this.props.noExport ? null :
-         <span onClick={() => exportTable(items, columns, name)} className="paging export">Export</span>;
+      const exportButton = name ?
+         <span onClick={() => exportTable(items, columns, name)} className="paging export">Export</span> :
+         null;
 
       let paging = null;
 
