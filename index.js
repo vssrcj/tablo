@@ -259,13 +259,13 @@ var _initialiseProps = function _initialiseProps() {
          description
       );
 
-      var exportButton = _this2.props.noExport ? null : _react2.default.createElement(
+      var exportButton = name ? _react2.default.createElement(
          "span",
          { onClick: function onClick() {
                return (0, _utils.exportTable)(items, columns, name);
             }, className: "paging export" },
          "Export"
-      );
+      ) : null;
 
       var paging = null;
 

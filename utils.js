@@ -122,8 +122,7 @@ var exportTable = exports.exportTable = function exportTable(items, columns, nam
    var url = URL.createObjectURL(blob);
    a.href = url;
 
-   // adds the table name to the downloaded file.  If none specified, the name is 'table'
-   if (!name) name = "table";
+   // adds the table name to the downloaded file.  If none specified, the name is 'table'   
    a.download = name + ".xls";
 
    // adds the anchor, click it, and removes it
