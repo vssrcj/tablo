@@ -33,10 +33,10 @@ export default class Tablo extends Component {
          page: 0,
 
          columns: props.columns.map(column => {
-            const extras = column.sortable === true || column.sortabel === undefined ?
+            const extras = column.sortable === true || column.sortable === undefined ?
                { sortable: true } : { };
 
-            const sortable = column.sortable || column.sortable === undefined;
+            const sortable = !column.component && (column.sortable || column.sortable === undefined);
 
             if(column.filterable) {
                const filters = [ ... new Set(props.items.map(i => i[column.key])) ];
@@ -49,7 +49,7 @@ export default class Tablo extends Component {
                };
             }
 
-            else if(column.searchable === true || column.searchable === undefined) return {
+            else if(!(column.header || column.component) && (column.searchable === true || column.searchable === undefined)) return {
                ...column,
                ...extras,
                search: "",
@@ -230,38 +230,38 @@ export default class Tablo extends Component {
       columns.map((column, index) => {
 
          // content will be added directly under a th tag
+
+         const name = column.name || null;
+
+         const sortIcon = column.sortable ? (
+            <div
+               className={`sort${sort.key === column.key ? " active": ""}`}
+               onClick={() => this.setSort(column.key)}
+               dangerouslySetInnerHTML={{
+                  __html: sort.key === column.key ? ( sort.asc ? "&#x21E9;" : "&#x21E7;" ) : "&#x21F3"
+               }}
+            />
+         ) : null;
+
          let content;
-         if(column.header) content = column.header;
-         else if(column.component) content = column.name || null;
-         else {
-            const sortIcon = column.sortable ? (
-               <div
-                  className={`sort${sort.key === column.key ? " active": ""}`}
-                  onClick={() => this.setSort(column.key)}
-                  dangerouslySetInnerHTML={{
-                     __html: sort.key === column.key ? ( sort.asc ? "&#x21E9;" : "&#x21E7;" ) : "&#x21F3"
-                  }}
+
+         if(column.filterable) {
+            const { filters, selections } = column;
+            content = (
+               <Filter
+                  sortIcon={selections.length == 1 ? null : sortIcon}
+                  filters={filters}
+                  selections={selections}
+                  setSelections={selections => this.setSelections(column.key, selections)}
+                  name={name}
                />
-            ) : null;
+            );
+         }
 
-            const name = column.name || null;
-
-            if(column.filterable) {
-               const { filters, selections } = column;
-               content = (
-                  <Filter
-                     sortIcon={selections.length == 1 ? null : sortIcon}
-                     filters={filters}
-                     selections={selections}
-                     setSelections={selections => this.setSelections(column.key, selections)}
-                     name={name}
-                  />
-               );
-            }
-
-            else {
-
-               const search = column.searchable ? (
+         else {
+            let search;
+            if(column.searchable) {
+               search = (
                   <div className="head-text">
                      <input type="text"
                         onChange={event => this.setSearch(column.key, event.target.value)}
@@ -270,15 +270,21 @@ export default class Tablo extends Component {
                         value={column.search}
                      />
                   </div>
-               ) : <div className="head-text">{name}</div>;
-
-               content = (
-                  <div className="head">
-                     { search }
-                     { column.sortable && (!column.filterable || column.selections.length !== 1) ? sortIcon : null }
-                  </div>
                );
             }
+            else if(column.header) {
+               search = column.header;
+            }
+            else {
+               search = <div className="head-text">{name}</div>;
+            }
+
+            content = (
+               <div className="head">
+                  { search }
+                  { column.sortable && (!column.filterable || column.selections.length !== 1) ? sortIcon : null }
+               </div>
+            );
          }
 
          return (

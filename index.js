@@ -64,9 +64,9 @@ var Tablo = function (_Component) {
          page: 0,
 
          columns: props.columns.map(function (column) {
-            var extras = column.sortable === true || column.sortabel === undefined ? { sortable: true } : {};
+            var extras = column.sortable === true || column.sortable === undefined ? { sortable: true } : {};
 
-            var sortable = column.sortable || column.sortable === undefined;
+            var sortable = !column.component && (column.sortable || column.sortable === undefined);
 
             if (column.filterable) {
                var filters = [].concat(_toConsumableArray(new Set(props.items.map(function (i) {
@@ -77,7 +77,7 @@ var Tablo = function (_Component) {
                   filters: filters,
                   sortable: sortable
                });
-            } else if (column.searchable === true || column.searchable === undefined) return _extends({}, column, extras, {
+            } else if (!(column.header || column.component) && (column.searchable === true || column.searchable === undefined)) return _extends({}, column, extras, {
                search: "",
                searchable: true,
                sortable: sortable
@@ -348,36 +348,38 @@ var _initialiseProps = function _initialiseProps() {
       return columns.map(function (column, index) {
 
          // content will be added directly under a th tag
+
+         var name = column.name || null;
+
+         var sortIcon = column.sortable ? _react2.default.createElement("div", {
+            className: "sort" + (sort.key === column.key ? " active" : ""),
+            onClick: function onClick() {
+               return _this2.setSort(column.key);
+            },
+            dangerouslySetInnerHTML: {
+               __html: sort.key === column.key ? sort.asc ? "&#x21E9;" : "&#x21E7;" : "&#x21F3"
+            }
+         }) : null;
+
          var content = void 0;
-         if (column.header) content = column.header;else if (column.component) content = column.name || null;else {
-            var sortIcon = column.sortable ? _react2.default.createElement("div", {
-               className: "sort" + (sort.key === column.key ? " active" : ""),
-               onClick: function onClick() {
-                  return _this2.setSort(column.key);
+
+         if (column.filterable) {
+            var filters = column.filters;
+            var selections = column.selections;
+
+            content = _react2.default.createElement(_filter2.default, {
+               sortIcon: selections.length == 1 ? null : sortIcon,
+               filters: filters,
+               selections: selections,
+               setSelections: function setSelections(selections) {
+                  return _this2.setSelections(column.key, selections);
                },
-               dangerouslySetInnerHTML: {
-                  __html: sort.key === column.key ? sort.asc ? "&#x21E9;" : "&#x21E7;" : "&#x21F3"
-               }
-            }) : null;
-
-            var name = column.name || null;
-
-            if (column.filterable) {
-               var filters = column.filters;
-               var selections = column.selections;
-
-               content = _react2.default.createElement(_filter2.default, {
-                  sortIcon: selections.length == 1 ? null : sortIcon,
-                  filters: filters,
-                  selections: selections,
-                  setSelections: function setSelections(selections) {
-                     return _this2.setSelections(column.key, selections);
-                  },
-                  name: name
-               });
-            } else {
-
-               var search = column.searchable ? _react2.default.createElement(
+               name: name
+            });
+         } else {
+            var search = void 0;
+            if (column.searchable) {
+               search = _react2.default.createElement(
                   "div",
                   { className: "head-text" },
                   _react2.default.createElement("input", { type: "text",
@@ -388,19 +390,23 @@ var _initialiseProps = function _initialiseProps() {
                      placeholder: name,
                      value: column.search
                   })
-               ) : _react2.default.createElement(
+               );
+            } else if (column.header) {
+               search = column.header;
+            } else {
+               search = _react2.default.createElement(
                   "div",
                   { className: "head-text" },
                   name
                );
-
-               content = _react2.default.createElement(
-                  "div",
-                  { className: "head" },
-                  search,
-                  column.sortable && (!column.filterable || column.selections.length !== 1) ? sortIcon : null
-               );
             }
+
+            content = _react2.default.createElement(
+               "div",
+               { className: "head" },
+               search,
+               column.sortable && (!column.filterable || column.selections.length !== 1) ? sortIcon : null
+            );
          }
 
          return _react2.default.createElement(
