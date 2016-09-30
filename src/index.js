@@ -14,7 +14,7 @@ export default class Tablo extends Component {
       const { sort, trimmed } = props.sort ?
       {
          sort: props.sort,
-         trimmed: sortItems(props.items, sort.key, sort.asc)
+         trimmed: sortItems(props.items, props.sort.key, props.sort.asc)
       } :
       {
          sort: { key: null, asc: true },

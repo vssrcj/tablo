@@ -44,6 +44,7 @@
 .tablo td {
   padding: 7px 2px;
   font-size: 15px;
+  word-break: break-all;
 }
 .tablo .sort {
   font-size: 17px;

@@ -42,7 +42,7 @@ var Tablo = function (_Component) {
 
       var _ref = props.sort ? {
          sort: props.sort,
-         trimmed: (0, _utils.sortItems)(props.items, sort.key, sort.asc)
+         trimmed: (0, _utils.sortItems)(props.items, props.sort.key, props.sort.asc)
       } : {
          sort: { key: null, asc: true },
          trimmed: props.items
