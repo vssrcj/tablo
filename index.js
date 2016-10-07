@@ -66,7 +66,7 @@ var Tablo = function (_Component) {
          columns: props.columns.map(function (column) {
             var extras = column.sortable === true || column.sortable === undefined ? { sortable: true } : {};
 
-            var sortable = !column.component && (column.sortable || column.sortable === undefined);
+            var sortable = column.key && (column.sortable || column.sortable === undefined);
 
             if (column.filterable) {
                var filters = [].concat(_toConsumableArray(new Set(props.items.map(function (i) {
@@ -168,12 +168,9 @@ var Tablo = function (_Component) {
                   "tbody",
                   null,
                   this.renderBody(items, columns, id),
-                  _react2.default.createElement(
-                     "tr",
-                     { key: -1 },
-                     this.renderFooter(columns.length)
-                  )
-               )
+                  this.renderFooter(columns)
+               ),
+               this.renderPaging()
             )
          );
       }
@@ -217,7 +214,7 @@ var _initialiseProps = function _initialiseProps() {
       _this2.setState({ columns: newColumns, page: 0, trimmed: trimmed });
    };
 
-   this.renderFooter = function (colSpan) {
+   this.renderPaging = function () {
       var _state5 = _this2.state;
       var trimmed = _state5.trimmed;
       var page = _state5.page;
@@ -311,14 +308,22 @@ var _initialiseProps = function _initialiseProps() {
       }
 
       return _react2.default.createElement(
-         "td",
-         { className: "footer-cell", colSpan: colSpan },
+         "tfoot",
+         null,
          _react2.default.createElement(
-            "div",
-            { className: "footer-container" },
-            paging,
-            exportButton,
-            descriptionGroup
+            "tr",
+            null,
+            _react2.default.createElement(
+               "td",
+               { className: "footer-cell", colSpan: columns.length },
+               _react2.default.createElement(
+                  "div",
+                  { className: "footer-container" },
+                  paging,
+                  exportButton,
+                  descriptionGroup
+               )
+            )
          )
       );
    };
@@ -411,7 +416,7 @@ var _initialiseProps = function _initialiseProps() {
 
          return _react2.default.createElement(
             "th",
-            { key: index, style: column.width ? { width: column.width } : {} },
+            { key: index, className: column.className, style: column.width ? { width: column.width } : {} },
             content
          );
       });
@@ -425,7 +430,7 @@ var _initialiseProps = function _initialiseProps() {
             columns.map(function (column, c) {
                if (column.component) return _react2.default.createElement(
                   "td",
-                  { key: c },
+                  { key: c, className: column.className },
                   column.component(item)
                );
 
@@ -433,12 +438,40 @@ var _initialiseProps = function _initialiseProps() {
                if (typeof value == "boolean") value = value ? "True" : "False";
                return _react2.default.createElement(
                   "td",
-                  { key: column.key },
+                  { key: column.key, className: column.className },
                   value
                );
             })
          );
       });
+   };
+
+   this.renderFooter = function (columns) {
+      var items = _this2.props.items;
+
+      if (columns && columns.some(function (c) {
+         return c.sum;
+      })) {
+         return _react2.default.createElement(
+            "tr",
+            { key: -1 },
+            columns.map(function (c, i) {
+               if (c.sum) {
+                  var total = items.map(function (i) {
+                     return parseFloat(i[c.key]) || 0;
+                  }).reduce(function (a, b) {
+                     return a + b;
+                  });
+                  return _react2.default.createElement(
+                     "td",
+                     { key: i, className: "aggregate-cell" },
+                     total.toFixed(2)
+                  );
+               } else return _react2.default.createElement("td", { key: i });
+            })
+         );
+      }
+      return null;
    };
 };
 

@@ -15,7 +15,9 @@ const renderClick = item => (
 
 const columns = [
   { width: 25, component: renderClick },
+   { name: "Code", key: "code", sum: true },
   { name: "Name", key: "name", searchable: false },
+
   { name: "Gender", key: "gender", filterable: true },
   { name: "Email", key: "contact.email", sortable: false },
   { name: "Job", key: "job_title" },

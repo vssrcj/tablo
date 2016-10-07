@@ -28,7 +28,7 @@
 .tablo tbody tr:last-child {
   border-bottom: none;
 }
-.tablo tr {
+.tablo tbody tr {
   border-bottom: 1px solid #e0e0e0;
 }
 .tablo th,
@@ -45,6 +45,10 @@
   padding: 7px 2px;
   font-size: 15px;
   word-break: break-all;
+}
+.tablo .aggregate-cell {
+  font-size: smaller;
+  font-weight: 900;
 }
 .tablo .sort {
   font-size: 17px;

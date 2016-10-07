@@ -36,7 +36,7 @@ export default class Tablo extends Component {
             const extras = column.sortable === true || column.sortable === undefined ?
                { sortable: true } : { };
 
-            const sortable = !column.component && (column.sortable || column.sortable === undefined);
+            const sortable = column.key && (column.sortable || column.sortable === undefined);
 
             if(column.filterable) {
                const filters = [ ... new Set(props.items.map(i => i[column.key])) ];
@@ -115,7 +115,7 @@ export default class Tablo extends Component {
       this.setState({ trimmed });
    }
 
-   renderFooter = colSpan => {
+   renderPaging = () => {
       const { trimmed, page, columns } = this.state;
       const { limit, items, name } = this.props;
 
@@ -190,13 +190,18 @@ export default class Tablo extends Component {
       }
 
       return (
-         <td className="footer-cell" colSpan={colSpan}>
-            <div className="footer-container">
-               { paging }
-               { exportButton }
-               { descriptionGroup }
-            </div>
-         </td>
+         <tfoot>
+            <tr>
+               <td className="footer-cell" colSpan={columns.length}>
+                  <div className="footer-container">
+                     { paging }
+                     { exportButton }
+                     { descriptionGroup }
+                  </div>
+               </td>
+            </tr>
+         </tfoot>
+
       );
    }
 
@@ -288,7 +293,7 @@ export default class Tablo extends Component {
          }
 
          return (
-            <th key={index} style={column.width ? { width: column.width } : {}}>
+            <th key={index} className={column.className} style={column.width ? { width: column.width } : {}}>
                { content }
             </th>
          );
@@ -301,12 +306,12 @@ export default class Tablo extends Component {
             <tr key={key ? getValue(item, key) : index}>
                {
                   columns.map((column, c) => {
-                     if(column.component) return <td key={c}>{column.component(item)}</td>;
+                     if(column.component) return <td key={c} className={column.className}>{column.component(item)}</td>;
 
                      let value = getValue(item, column.key);
                      if(typeof value == "boolean") value = value ? "True" : "False";
                      return (
-                        <td key={column.key}>{value}</td>
+                        <td key={column.key} className={column.className}>{value}</td>
                      );
                   })
                }
@@ -314,6 +319,24 @@ export default class Tablo extends Component {
          );
       })
    );
+
+   renderFooter = columns => {
+      const { items } = this.props;
+      if(columns && columns.some(c => c.sum)) {
+         return (
+            <tr key={-1}>
+               {columns.map((c, i) => {
+                  if(c.sum) {
+                     const total = (items.map(i => parseFloat(i[c.key]) || 0)).reduce((a,b) => a+b);
+                     return <td key={i} className="aggregate-cell">{total.toFixed(2)}</td>
+                  }
+                  else return <td key={i}></td>
+               })}
+            </tr>
+         );
+      }
+      return null;
+   };
 
    render() {
 
@@ -332,10 +355,10 @@ export default class Tablo extends Component {
                </thead>
                <tbody>
                   { this.renderBody(items, columns, id) }
-                  <tr key={-1}>
-                     { this.renderFooter(columns.length) }
-                  </tr>
+
+                  { this.renderFooter(columns) }
                </tbody>
+               { this.renderPaging() }
             </table>
          </div>
       );
