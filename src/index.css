@@ -2,6 +2,9 @@
   margin: 0 10px;
   box-sizing: border-box;
 }
+.tablo .footer {
+   border-bottom: none;
+}
 .tablo {
   border-collapse: collapse;
   width: 100%;
@@ -20,15 +23,12 @@
 .tablo .head-input {
   min-width: 40px;
   width: 100%;
-  padding: 10px 0;
+  padding: 10px 0 10px 5px;
   outline: none;
   border: none;
   background: inherit;
 }
-.tablo tbody tr:last-child {
-  border-bottom: none;
-}
-.tablo tbody tr {
+.tablo tbody tr:not(.tablo--aggregates) {
   border-bottom: 1px solid #e0e0e0;
 }
 .tablo th,
@@ -49,6 +49,7 @@
 .tablo .aggregate-cell {
   font-size: smaller;
   font-weight: 900;
+      background: #eee;
 }
 .tablo .sort {
   font-size: 17px;
@@ -133,4 +134,13 @@
 }
 .tablo .filters .selection::before {
    content: "x ";
+}
+.tablo .limit-setter {
+   margin-left: auto;
+   font-size: 13px;
+}
+.tablo .limit-setter input {
+   width: 40px;
+   margin-left: 4px;
+   outline: none;
 }

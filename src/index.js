@@ -32,6 +32,8 @@ export default class Tablo extends Component {
          // index of current page
          page: 0,
 
+         limit: props.limit || 15,
+
          columns: props.columns.map(column => {
             const extras = column.sortable === true || column.sortable === undefined ?
                { sortable: true } : { };
@@ -116,8 +118,8 @@ export default class Tablo extends Component {
    }
 
    renderPaging = () => {
-      const { trimmed, page, columns } = this.state;
-      const { limit, items, name } = this.props;
+      const { trimmed, page, columns, limit } = this.state;
+      const { items, name } = this.props;
 
       const pages = parseInt((trimmed.length - 1)/limit) + 1;
 
@@ -152,7 +154,7 @@ export default class Tablo extends Component {
             {description}
          </span>;
 
-      const exportButton = name ?
+      const exportButton = name && items.length > 0 ?
          <span onClick={() => exportTable(items, columns, name)} className="paging export">Export</span> :
          null;
 
@@ -189,6 +191,10 @@ export default class Tablo extends Component {
          });
       }
 
+      const limitSetter = this.props.setLimit ?
+         <div className="limit-setter">Entries per page<input type="number" min={1} max={50} value={this.state.limit} onChange={this.setLimit} /></div> :
+         null;
+
       return (
          <tfoot>
             <tr>
@@ -196,6 +202,7 @@ export default class Tablo extends Component {
                   <div className="footer-container">
                      { paging }
                      { exportButton }
+                     { limitSetter }
                      { descriptionGroup }
                   </div>
                </td>
@@ -205,6 +212,10 @@ export default class Tablo extends Component {
       );
    }
 
+   setLimit = evnt => {
+      this.setState({ limit: evnt.target.value });
+   };
+
    /*
     * sets the complete selections for a column.
     */
@@ -212,15 +223,8 @@ export default class Tablo extends Component {
 
       const { items } = this.props;
 
-      const columns = this.state.columns.map(column => {
-         if(column.key == columnId) {
-            return {
-               ...column,
-               selections
-            };
-         }
-         return column;
-      });
+      const columns = this.state.columns.map(c => c.key == columnId ? { ...c, selections } : c );
+
       const trimmed = filterItems(items, columns);
 
       this.setState({ columns, trimmed, page: 0 });
@@ -324,9 +328,9 @@ export default class Tablo extends Component {
       const { items } = this.props;
       if(columns && columns.some(c => c.sum)) {
          return (
-            <tr key={-1}>
+            <tr key={-1} className="tablo--aggregates">
                {columns.map((c, i) => {
-                  if(c.sum) {
+                  if(c.sum && items && items.length > 0) {
                      const total = (items.map(i => parseFloat(i[c.key]) || 0)).reduce((a,b) => a+b);
                      return <td key={i} className="aggregate-cell">{total.toFixed(2)}</td>
                   }
@@ -340,8 +344,8 @@ export default class Tablo extends Component {
 
    render() {
 
-      const { id, limit } = this.props;
-      const { columns, sort, trimmed, page } = this.state;
+      const { id } = this.props;
+      const { columns, sort, trimmed, page, limit } = this.state;
 
       const items = trimmed.slice(page * limit, (page + 1) * limit);
 

@@ -32,6 +32,7 @@ const App = () => (
 			limit={10}
 			columns={columns}
 			id="code"
+         setLimit={true}
 		/>
 	</div>
 );

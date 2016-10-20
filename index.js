@@ -63,6 +63,8 @@ var Tablo = function (_Component) {
          // index of current page
          page: 0,
 
+         limit: props.limit || 15,
+
          columns: props.columns.map(function (column) {
             var extras = column.sortable === true || column.sortable === undefined ? { sortable: true } : {};
 
@@ -137,14 +139,13 @@ var Tablo = function (_Component) {
    }, {
       key: "render",
       value: function render() {
-         var _props = this.props;
-         var id = _props.id;
-         var limit = _props.limit;
+         var id = this.props.id;
          var _state2 = this.state;
          var columns = _state2.columns;
          var sort = _state2.sort;
          var trimmed = _state2.trimmed;
          var page = _state2.page;
+         var limit = _state2.limit;
 
 
          var items = trimmed.slice(page * limit, (page + 1) * limit);
@@ -219,10 +220,10 @@ var _initialiseProps = function _initialiseProps() {
       var trimmed = _state5.trimmed;
       var page = _state5.page;
       var columns = _state5.columns;
-      var _props2 = _this2.props;
-      var limit = _props2.limit;
-      var items = _props2.items;
-      var name = _props2.name;
+      var limit = _state5.limit;
+      var _props = _this2.props;
+      var items = _props.items;
+      var name = _props.name;
 
 
       var pages = parseInt((trimmed.length - 1) / limit) + 1;
@@ -256,7 +257,7 @@ var _initialiseProps = function _initialiseProps() {
          description
       );
 
-      var exportButton = name ? _react2.default.createElement(
+      var exportButton = name && items.length > 0 ? _react2.default.createElement(
          "span",
          { onClick: function onClick() {
                return (0, _utils.exportTable)(items, columns, name);
@@ -307,6 +308,13 @@ var _initialiseProps = function _initialiseProps() {
          })();
       }
 
+      var limitSetter = _this2.props.setLimit ? _react2.default.createElement(
+         "div",
+         { className: "limit-setter" },
+         "Entries per page",
+         _react2.default.createElement("input", { type: "number", min: 1, max: 50, value: _this2.state.limit, onChange: _this2.setLimit })
+      ) : null;
+
       return _react2.default.createElement(
          "tfoot",
          null,
@@ -321,6 +329,7 @@ var _initialiseProps = function _initialiseProps() {
                   { className: "footer-container" },
                   paging,
                   exportButton,
+                  limitSetter,
                   descriptionGroup
                )
             )
@@ -328,18 +337,18 @@ var _initialiseProps = function _initialiseProps() {
       );
    };
 
+   this.setLimit = function (evnt) {
+      _this2.setState({ limit: evnt.target.value });
+   };
+
    this.setSelections = function (columnId, selections) {
       var items = _this2.props.items;
 
 
-      var columns = _this2.state.columns.map(function (column) {
-         if (column.key == columnId) {
-            return _extends({}, column, {
-               selections: selections
-            });
-         }
-         return column;
+      var columns = _this2.state.columns.map(function (c) {
+         return c.key == columnId ? _extends({}, c, { selections: selections }) : c;
       });
+
       var trimmed = (0, _utils.filterItems)(items, columns);
 
       _this2.setState({ columns: columns, trimmed: trimmed, page: 0 });
@@ -454,9 +463,9 @@ var _initialiseProps = function _initialiseProps() {
       })) {
          return _react2.default.createElement(
             "tr",
-            { key: -1 },
+            { key: -1, className: "tablo--aggregates" },
             columns.map(function (c, i) {
-               if (c.sum) {
+               if (c.sum && items && items.length > 0) {
                   var total = items.map(function (i) {
                      return parseFloat(i[c.key]) || 0;
                   }).reduce(function (a, b) {
