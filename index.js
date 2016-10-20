@@ -459,13 +459,13 @@ var _initialiseProps = function _initialiseProps() {
       var items = _this2.props.items;
 
       if (columns && columns.some(function (c) {
-         return c.sum;
+         return c.sum != null;
       })) {
          return _react2.default.createElement(
             "tr",
             { key: -1, className: "tablo--aggregates" },
             columns.map(function (c, i) {
-               if (c.sum && items && items.length > 0) {
+               if (c.sum != null && items && items.length > 0) {
                   var total = items.map(function (i) {
                      return parseFloat(i[c.key]) || 0;
                   }).reduce(function (a, b) {
@@ -474,7 +474,7 @@ var _initialiseProps = function _initialiseProps() {
                   return _react2.default.createElement(
                      "td",
                      { key: i, className: "aggregate-cell" },
-                     total.toFixed(2)
+                     total.toFixed(c.sum)
                   );
                } else return _react2.default.createElement("td", { key: i });
             })

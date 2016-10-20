@@ -326,13 +326,13 @@ export default class Tablo extends Component {
 
    renderFooter = columns => {
       const { items } = this.props;
-      if(columns && columns.some(c => c.sum)) {
+      if(columns && columns.some(c => c.sum != null)) {
          return (
             <tr key={-1} className="tablo--aggregates">
                {columns.map((c, i) => {
-                  if(c.sum && items && items.length > 0) {
+                  if(c.sum != null && items && items.length > 0) {
                      const total = (items.map(i => parseFloat(i[c.key]) || 0)).reduce((a,b) => a+b);
-                     return <td key={i} className="aggregate-cell">{total.toFixed(2)}</td>
+                     return <td key={i} className="aggregate-cell">{total.toFixed(c.sum)}</td>
                   }
                   else return <td key={i}></td>
                })}
