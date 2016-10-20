@@ -312,7 +312,7 @@ var _initialiseProps = function _initialiseProps() {
          "div",
          { className: "limit-setter" },
          "Entries per page",
-         _react2.default.createElement("input", { type: "number", min: 1, max: 50, value: _this2.state.limit, onChange: _this2.setLimit })
+         _react2.default.createElement("input", { type: "number", min: 1, max: itemsCount < 50 ? itemsCount : 50, value: _this2.state.limit, onChange: _this2.setLimit })
       ) : null;
 
       return _react2.default.createElement(
@@ -338,7 +338,7 @@ var _initialiseProps = function _initialiseProps() {
    };
 
    this.setLimit = function (evnt) {
-      _this2.setState({ limit: evnt.target.value });
+      _this2.setState({ limit: evnt.target.value, page: 0 });
    };
 
    this.setSelections = function (columnId, selections) {

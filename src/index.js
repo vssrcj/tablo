@@ -192,7 +192,7 @@ export default class Tablo extends Component {
       }
 
       const limitSetter = this.props.setLimit ?
-         <div className="limit-setter">Entries per page<input type="number" min={1} max={50} value={this.state.limit} onChange={this.setLimit} /></div> :
+         <div className="limit-setter">Entries per page<input type="number" min={1} max={itemsCount < 50 ? itemsCount : 50} value={this.state.limit} onChange={this.setLimit} /></div> :
          null;
 
       return (
@@ -213,7 +213,7 @@ export default class Tablo extends Component {
    }
 
    setLimit = evnt => {
-      this.setState({ limit: evnt.target.value });
+      this.setState({ limit: evnt.target.value, page: 0 });
    };
 
    /*
