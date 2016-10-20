@@ -332,7 +332,10 @@ export default class Tablo extends Component {
                {columns.map((c, i) => {
                   if(c.sum != null && items && items.length > 0) {
                      const total = (items.map(i => parseFloat(i[c.key]) || 0)).reduce((a,b) => a+b);
-                     return <td key={i} className="aggregate-cell">{total.toFixed(c.sum)}</td>
+                     let content;
+                     if(c.footer) content = c.footer(total);
+                     else content = total.toFixed(c.sum);
+                     return <td key={i} className="aggregate-cell">{content}</td>
                   }
                   else return <td key={i}></td>
                })}

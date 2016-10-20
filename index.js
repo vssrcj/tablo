@@ -471,10 +471,12 @@ var _initialiseProps = function _initialiseProps() {
                   }).reduce(function (a, b) {
                      return a + b;
                   });
+                  var content = void 0;
+                  if (c.footer) content = c.footer(total);else content = total.toFixed(c.sum);
                   return _react2.default.createElement(
                      "td",
                      { key: i, className: "aggregate-cell" },
-                     total.toFixed(c.sum)
+                     content
                   );
                } else return _react2.default.createElement("td", { key: i });
             })

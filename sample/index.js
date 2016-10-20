@@ -15,7 +15,7 @@ const renderClick = item => (
 
 const columns = [
   { width: 25, component: renderClick },
-   { name: "Code", key: "code", sum: 0 },
+   { name: "Code", key: "code", sum: true, footer: total => <div style={{background: "red"}}>{total}</div> },
   { name: "Name", key: "name", searchable: false },
 
   { name: "Gender", key: "gender", filterable: true },
