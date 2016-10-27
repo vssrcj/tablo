@@ -247,7 +247,7 @@ export default class Tablo extends Component {
                className={`sort${sort.key === column.key ? " active": ""}`}
                onClick={() => this.setSort(column.key)}
                dangerouslySetInnerHTML={{
-                  __html: sort.key === column.key ? ( sort.asc ? "&#x21E9;" : "&#x21E7;" ) : "&#x21F3"
+                  __html: sort.key === column.key ? ( sort.asc ? "&#x25B4;" : "&#x25Be;" ) : "&#x25B4;"
                }}
             />
          ) : null;
