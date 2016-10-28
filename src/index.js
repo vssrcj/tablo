@@ -206,7 +206,10 @@ export default class Tablo extends Component {
    renderExportButton = items => {
       const { name } = this.props;
       return name && items.length > 0 ?
-         <button onClick={() => exportTable(items, this.state.columns, name)} className="export">Export</button> :
+         <button onClick={() => {
+            const result = confirm("Are you sure you want to export this table to an Excel spreadsheet?");
+            if(result) exportTable(items, this.state.columns, name);
+         }} className="export">Export</button> :
          null;
    };
 
