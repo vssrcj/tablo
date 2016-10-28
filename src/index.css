@@ -70,16 +70,9 @@
    color: #0a2c45;
    font-weight: 900;
 }
-.tablo .sort:hover {
-
-}
 .tablo .paging {
   margin: 0 2px;
   padding: 4px 8px;
-}
-.tablo .export {
-  background: #ddd;
-  margin-left: 10px;
 }
 .tablo .paging.selected {
   background: #0a2c45;
@@ -143,12 +136,36 @@
 .tablo .filters .selection::before {
    content: "x ";
 }
-.tablo .limit-setter {
-   margin-left: auto;
+.tablo--container .limit-setter {
    font-size: 13px;
 }
-.tablo .limit-setter input {
+.tablo--container .limit-setter input {
    width: 40px;
-   margin-left: 4px;
+   padding: 6px;
+   border: 1px solid #bbb;
+}
+.tablo--container .limit-setter input, .tablo--container .export {
    outline: none;
 }
+.tablo--container .export {
+   border: none;
+   background: #33b;
+   color: #fff;
+   cursor: pointer;
+   padding: 7px;
+}
+.tablo--container .limit-setter + .export {
+   margin-left: 5px;
+}
+.tablo--container .header {
+   display: flex;
+   align-items: center;
+}
+/*
+margin: 0 16px 5px 16px;
+border: none;
+padding: 3px 7px;
+background: #87b2e0;
+color: #fff;
+border-radius: 4px;
+cursor: pointer;*/

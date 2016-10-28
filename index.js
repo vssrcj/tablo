@@ -153,6 +153,7 @@ var Tablo = function (_Component) {
          return _react2.default.createElement(
             "div",
             { className: "tablo--container" },
+            this.renderHeader(),
             _react2.default.createElement(
                "table",
                { className: "tablo" },
@@ -257,14 +258,6 @@ var _initialiseProps = function _initialiseProps() {
          description
       );
 
-      var exportButton = name && items.length > 0 ? _react2.default.createElement(
-         "span",
-         { onClick: function onClick() {
-               return (0, _utils.exportTable)(items, columns, name);
-            }, className: "paging export" },
-         "Export"
-      ) : null;
-
       var paging = null;
 
       if (pages > 1) {
@@ -308,13 +301,6 @@ var _initialiseProps = function _initialiseProps() {
          })();
       }
 
-      var limitSetter = _this2.props.setLimit ? _react2.default.createElement(
-         "div",
-         { className: "limit-setter" },
-         "Entries per page",
-         _react2.default.createElement("input", { type: "number", min: 1, max: itemsCount < 50 ? itemsCount : 50, value: _this2.state.limit, onChange: _this2.setLimit })
-      ) : null;
-
       return _react2.default.createElement(
          "tfoot",
          null,
@@ -328,8 +314,6 @@ var _initialiseProps = function _initialiseProps() {
                   "div",
                   { className: "footer-container" },
                   paging,
-                  exportButton,
-                  limitSetter,
                   descriptionGroup
                )
             )
@@ -337,8 +321,46 @@ var _initialiseProps = function _initialiseProps() {
       );
    };
 
+   this.renderExportButton = function (items) {
+      var name = _this2.props.name;
+
+      return name && items.length > 0 ? _react2.default.createElement(
+         "button",
+         { onClick: function onClick() {
+               return (0, _utils.exportTable)(items, _this2.state.columns, name);
+            }, className: "export" },
+         "Export"
+      ) : null;
+   };
+
+   this.renderLimitSetter = function (items) {
+      var itemsCount = items.length;
+      return _this2.props.setLimit ? _react2.default.createElement(
+         "div",
+         { className: "limit-setter" },
+         _react2.default.createElement("input", { type: "number", min: 1, max: itemsCount < 50 ? itemsCount : 50, value: _this2.state.limit, onChange: _this2.setLimit })
+      ) : null;
+   };
+
    this.setLimit = function (evnt) {
       _this2.setState({ limit: evnt.target.value, page: 0 });
+   };
+
+   this.renderHeader = function () {
+      var items = _this2.props.items;
+
+
+      var limitSetter = _this2.renderLimitSetter(items);
+      var exportButton = _this2.renderExportButton(items);
+
+      if (limitSetter || exportButton) return _react2.default.createElement(
+         "div",
+         { className: "header" },
+         limitSetter,
+         exportButton
+      );
+
+      return null;
    };
 
    this.setSelections = function (columnId, selections) {
@@ -371,7 +393,7 @@ var _initialiseProps = function _initialiseProps() {
                return _this2.setSort(column.key);
             },
             dangerouslySetInnerHTML: {
-               __html: sort.key === column.key ? sort.asc ? "&#x21E9;" : "&#x21E7;" : "&#x21F3"
+               __html: sort.key === column.key ? sort.asc ? "&#x25B4;" : "&#x25Be;" : "&#x25B4;"
             }
          }) : null;
 

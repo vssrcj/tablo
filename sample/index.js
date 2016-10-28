@@ -33,6 +33,7 @@ const App = () => (
 			columns={columns}
 			id="code"
          setLimit={true}
+         name="usssss"
 		/>
 	</div>
 );

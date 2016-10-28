@@ -154,9 +154,6 @@ export default class Tablo extends Component {
             {description}
          </span>;
 
-      const exportButton = name && items.length > 0 ?
-         <span onClick={() => exportTable(items, columns, name)} className="paging export">Export</span> :
-         null;
 
       let paging = null;
 
@@ -191,18 +188,12 @@ export default class Tablo extends Component {
          });
       }
 
-      const limitSetter = this.props.setLimit ?
-         <div className="limit-setter">Entries per page<input type="number" min={1} max={itemsCount < 50 ? itemsCount : 50} value={this.state.limit} onChange={this.setLimit} /></div> :
-         null;
-
       return (
          <tfoot>
             <tr>
                <td className="footer-cell" colSpan={columns.length}>
                   <div className="footer-container">
                      { paging }
-                     { exportButton }
-                     { limitSetter }
                      { descriptionGroup }
                   </div>
                </td>
@@ -210,10 +201,44 @@ export default class Tablo extends Component {
          </tfoot>
 
       );
-   }
+   };
+
+   renderExportButton = items => {
+      const { name } = this.props;
+      return name && items.length > 0 ?
+         <button onClick={() => exportTable(items, this.state.columns, name)} className="export">Export</button> :
+         null;
+   };
+
+   renderLimitSetter = items => {
+      const itemsCount = items.length;
+      return (
+         this.props.setLimit ?
+            <div className="limit-setter">
+               <input type="number" min={1} max={itemsCount < 50 ? itemsCount : 50} value={this.state.limit} onChange={this.setLimit} />
+            </div> : null
+      );
+   };
 
    setLimit = evnt => {
       this.setState({ limit: evnt.target.value, page: 0 });
+   };
+
+   renderHeader = () => {
+
+      const { items } = this.props;
+
+      const limitSetter = this.renderLimitSetter(items);
+      const exportButton = this.renderExportButton(items);
+
+      if(limitSetter || exportButton) return (
+         <div className="header">
+            { limitSetter }
+            { exportButton }
+         </div>
+      );
+
+      return null;
    };
 
    /*
@@ -354,6 +379,7 @@ export default class Tablo extends Component {
 
       return (
          <div className="tablo--container">
+            { this.renderHeader() }
             <table className="tablo">
                <thead>
                   <tr>
