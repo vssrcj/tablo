@@ -91,70 +91,74 @@ var Filter = function (_Component) {
 
          var selectionsLength = selections.length;
 
-         if (!display) {
-            return _react2.default.createElement(
+         var content = null;
+
+         if (display) {
+
+            var filters = this.props.filters.filter(function (f) {
+               return selections.indexOf(f) === -1;
+            });
+
+            content = _react2.default.createElement(
                "div",
-               { className: "head" },
+               { className: "filter-content" },
                _react2.default.createElement(
                   "div",
-                  { className: "head-text", onClick: function onClick() {
-                        return _this2.setState({ display: true });
-                     } },
-                  _react2.default.createElement("input", {
-                     type: "text",
-                     className: "head-input",
-                     placeholder: selectionsLength === 0 ? name + " (no filters)" : name + " (" + selectionsLength + " filters)",
-                     disabled: true
-                  })
-               ),
-               sortIcon
+                  { className: "selections", ref: "selections" },
+                  selectionsLength > 0 ? _react2.default.createElement(
+                     "div",
+                     { className: "clear", onClick: function onClick() {
+                           return _this2.clearSelections();
+                        } },
+                     "Clear all filters"
+                  ) : null,
+                  _react2.default.createElement(
+                     "div",
+                     { className: "filters" },
+                     selections.map(function (s) {
+                        return _react2.default.createElement(
+                           "div",
+                           { className: "selection", key: s, onClick: function onClick() {
+                                 return _this2.removeFromSelections(s);
+                              } },
+                           s
+                        );
+                     })
+                  ),
+                  _react2.default.createElement(
+                     "div",
+                     { className: "choices" },
+                     filters.map(function (f) {
+                        return _react2.default.createElement(
+                           "div",
+                           { className: "selection", key: f, onClick: function onClick() {
+                                 return _this2.addToSelections(f);
+                              } },
+                           f
+                        );
+                     })
+                  )
+               )
             );
          }
 
-         var filters = this.props.filters.filter(function (f) {
-            return selections.indexOf(f) === -1;
-         });
-
          return _react2.default.createElement(
             "div",
-            { style: { minWidth: "170px", position: "relative" } },
+            { className: "head", style: { position: "relative" } },
             _react2.default.createElement(
                "div",
-               { className: "selections", ref: "selections" },
-               selectionsLength > 0 ? _react2.default.createElement(
-                  "div",
-                  { className: "clear", onClick: function onClick() {
-                        return _this2.clearSelections();
-                     } },
-                  "Clear all filters"
-               ) : null,
-               _react2.default.createElement(
-                  "div",
-                  { className: "filters" },
-                  selections.map(function (s) {
-                     return _react2.default.createElement(
-                        "div",
-                        { className: "selection", key: s, onClick: function onClick() {
-                              return _this2.removeFromSelections(s);
-                           } },
-                        s
-                     );
-                  })
-               ),
-               _react2.default.createElement(
-                  "div",
-                  { className: "choices" },
-                  filters.map(function (f) {
-                     return _react2.default.createElement(
-                        "div",
-                        { className: "selection", key: f, onClick: function onClick() {
-                              return _this2.addToSelections(f);
-                           } },
-                        f
-                     );
-                  })
-               )
-            )
+               { className: "head-text", onClick: function onClick() {
+                     return _this2.setState({ display: true });
+                  } },
+               _react2.default.createElement("input", {
+                  type: "text",
+                  className: "head-input",
+                  placeholder: selectionsLength === 0 ? name + " (no filters)" : name + " (" + selectionsLength + " filters)",
+                  disabled: true
+               })
+            ),
+            content,
+            sortIcon
          );
       }
    }]);

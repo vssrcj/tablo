@@ -11,12 +11,18 @@
 }
 .tablo .filter-content {
   position: absolute;
-  top: 60px;
+  top: 100%;
+ left: 0;
+ right: 0;
 }
 .tablo .head {
   display: flex;
   width: 100%;
   align-items: center;
+}
+.tablo .head.filtering {
+   background: #f6f6f6;
+   padding-left: 8px;
 }
 .tablo .head-text {
   flex: 1;

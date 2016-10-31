@@ -81,7 +81,7 @@ export default class Filter extends Component {
       }
 
       return (
-         <div className="head" style={{ position: "relative" }}>
+         <div className="head filtering" style={{ position: "relative" }}>
             <div className="head-text" onClick={() => this.setState({ display: true })}>
                <input
                   type="text"
