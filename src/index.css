@@ -9,6 +9,10 @@
   border-collapse: collapse;
   width: 100%;
 }
+.tablo .filter-content {
+  position: absolute;
+  top: 60px;
+}
 .tablo .head {
   display: flex;
   width: 100%;

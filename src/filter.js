@@ -51,47 +51,51 @@ export default class Filter extends Component {
 
       const selectionsLength = selections.length;
 
-      if(!display) {
-         return (
-            <div className="head">
-               <div className="head-text" onClick={() => this.setState({ display: true })}>
-                  <input
-                     type="text"
-                     className="head-input"
-                     placeholder={
-                        selectionsLength === 0 ?
-                        `${name} (no filters)` :
-                        `${name} (${selectionsLength} filters)`
+      let content = null;
+
+      if(display) {
+
+         const filters = this.props.filters.filter(f => selections.indexOf(f) === -1);
+
+         content = (
+            <div className="filter-content">
+               <div className="selections" ref="selections">
+                  { selectionsLength > 0 ? <div className="clear" onClick={() => this.clearSelections()}>Clear all filters</div> : null }
+                  <div className="filters">
+                     {
+                        selections.map(s => (
+                           <div className="selection" key={s} onClick={() => this.removeFromSelections(s)}>{s}</div>
+                        ))
                      }
-                     disabled={true}
-                  />
+                  </div>
+                  <div className="choices">
+                     {
+                        filters.map(f => (
+                           <div className="selection" key={f} onClick={() => this.addToSelections(f)}>{f}</div>
+                        ))
+                     }
+                  </div>
                </div>
-               {sortIcon}
             </div>
          );
       }
 
-      const filters = this.props.filters.filter(f => selections.indexOf(f) === -1);
-
       return (
-         <div style={{ minWidth: "170px", position: "relative" }}>
-            <div className="selections" ref="selections">
-               { selectionsLength > 0 ? <div className="clear" onClick={() => this.clearSelections()}>Clear all filters</div> : null }
-               <div className="filters">
-                  {
-                     selections.map(s => (
-                        <div className="selection" key={s} onClick={() => this.removeFromSelections(s)}>{s}</div>
-                     ))
+         <div className="head" style={{ position: "relative" }}>
+            <div className="head-text" onClick={() => this.setState({ display: true })}>
+               <input
+                  type="text"
+                  className="head-input"
+                  placeholder={
+                     selectionsLength === 0 ?
+                     `${name} (no filters)` :
+                     `${name} (${selectionsLength} filters)`
                   }
-               </div>
-               <div className="choices">
-                  {
-                     filters.map(f => (
-                        <div className="selection" key={f} onClick={() => this.addToSelections(f)}>{f}</div>
-                     ))
-                  }
-               </div>
+                  disabled={true}
+               />
             </div>
+            { content }
+            { sortIcon }
          </div>
       );
    }

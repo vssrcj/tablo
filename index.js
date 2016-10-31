@@ -327,7 +327,8 @@ var _initialiseProps = function _initialiseProps() {
       return name && items.length > 0 ? _react2.default.createElement(
          "button",
          { onClick: function onClick() {
-               return (0, _utils.exportTable)(items, _this2.state.columns, name);
+               var result = confirm("Are you sure you want to export this table to an Excel spreadsheet?");
+               if (result) (0, _utils.exportTable)(items, _this2.state.columns, name);
             }, className: "export" },
          "Export"
       ) : null;
