@@ -139,7 +139,9 @@ var Tablo = function (_Component) {
    }, {
       key: "render",
       value: function render() {
-         var id = this.props.id;
+         var _props = this.props;
+         var id = _props.id;
+         var noPaging = _props.noPaging;
          var _state2 = this.state;
          var columns = _state2.columns;
          var sort = _state2.sort;
@@ -172,7 +174,7 @@ var Tablo = function (_Component) {
                   this.renderBody(items, columns, id),
                   this.renderFooter(columns)
                ),
-               this.renderPaging()
+               noPaging ? null : this.renderPaging()
             )
          );
       }
@@ -222,9 +224,9 @@ var _initialiseProps = function _initialiseProps() {
       var page = _state5.page;
       var columns = _state5.columns;
       var limit = _state5.limit;
-      var _props = _this2.props;
-      var items = _props.items;
-      var name = _props.name;
+      var _props2 = _this2.props;
+      var items = _props2.items;
+      var name = _props2.name;
 
 
       var pages = parseInt((trimmed.length - 1) / limit) + 1;
@@ -339,7 +341,8 @@ var _initialiseProps = function _initialiseProps() {
       return _this2.props.setLimit ? _react2.default.createElement(
          "div",
          { className: "limit-setter" },
-         _react2.default.createElement("input", { type: "number", min: 1, max: itemsCount < 50 ? itemsCount : 50, value: _this2.state.limit, onChange: _this2.setLimit })
+         _react2.default.createElement("input", { type: "number", min: 1, max: itemsCount < 50 ? itemsCount : 50,
+            value: _this2.state.limit > itemsCount ? itemsCount : _this2.state.limit, onChange: _this2.setLimit })
       ) : null;
    };
 
@@ -348,7 +351,9 @@ var _initialiseProps = function _initialiseProps() {
    };
 
    this.renderHeader = function () {
-      var items = _this2.props.items;
+      var _props3 = _this2.props;
+      var items = _props3.items;
+      var header = _props3.header;
 
 
       var limitSetter = _this2.renderLimitSetter(items);
@@ -358,7 +363,8 @@ var _initialiseProps = function _initialiseProps() {
          "div",
          { className: "header" },
          limitSetter,
-         exportButton
+         exportButton,
+         header || null
       );
 
       return null;
@@ -446,9 +452,11 @@ var _initialiseProps = function _initialiseProps() {
             );
          }
 
+         var rowClass = column.className && column.filterable ? column.className + " filtering" : column.className ? column.className : column.filterable ? "filtering" : null;
+
          return _react2.default.createElement(
             "th",
-            { key: index, className: column.className, style: column.width ? { width: column.width } : {} },
+            { key: index, className: rowClass, style: column.width ? { width: column.width } : {} },
             content
          );
       });

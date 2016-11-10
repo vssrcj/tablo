@@ -28,6 +28,8 @@ var sortItems = exports.sortItems = function sortItems(items, key, asc) {
    return items.sort(function (a, b) {
       var A = getValue(a, key) || "";
       var B = getValue(b, key) || "";
+      if (typeof A == "string") A = A.toLowerCase();
+      if (typeof B == "string") B = B.toLowerCase();
       if (A < B) return L;
       if (A > B) return R;
       return 0;
@@ -122,7 +124,7 @@ var exportTable = exports.exportTable = function exportTable(items, columns, nam
    var url = URL.createObjectURL(blob);
    a.href = url;
 
-   // adds the table name to the downloaded file.  If none specified, the name is 'table'   
+   // adds the table name to the downloaded file.  If none specified, the name is 'table'
    a.download = name + ".xls";
 
    // adds the anchor, click it, and removes it

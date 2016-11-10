@@ -21,8 +21,10 @@ export const sortItems = (items, key, asc) => {
    const L = asc ? -1 : 1;
    const R = asc ? 1 : -1;
    return items.sort((a, b) => {
-      const A = getValue(a, key) || "";
-      const B = getValue(b, key) || "";
+      let A = getValue(a, key) || "";
+      let B = getValue(b, key) || "";
+      if(typeof A == "string") A = A.toLowerCase();
+      if(typeof B == "string") B = B.toLowerCase();
       if(A < B) return L;
       if(A > B) return R;
       return 0;
@@ -139,7 +141,7 @@ export const exportTable = (items, columns, name) => {
    const url = URL.createObjectURL(blob);
    a.href = url;
 
-   // adds the table name to the downloaded file.  If none specified, the name is 'table'   
+   // adds the table name to the downloaded file.  If none specified, the name is 'table'
    a.download = name + ".xls";
 
    // adds the anchor, click it, and removes it

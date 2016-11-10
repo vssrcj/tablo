@@ -218,7 +218,8 @@ export default class Tablo extends Component {
       return (
          this.props.setLimit ?
             <div className="limit-setter">
-               <input type="number" min={1} max={itemsCount < 50 ? itemsCount : 50} value={this.state.limit} onChange={this.setLimit} />
+               <input type="number" min={1} max={itemsCount < 50 ? itemsCount : 50}
+                  value={this.state.limit > itemsCount ? itemsCount : this.state.limit} onChange={this.setLimit} />
             </div> : null
       );
    };
@@ -229,7 +230,7 @@ export default class Tablo extends Component {
 
    renderHeader = () => {
 
-      const { items } = this.props;
+      const { items, header } = this.props;
 
       const limitSetter = this.renderLimitSetter(items);
       const exportButton = this.renderExportButton(items);
@@ -238,6 +239,7 @@ export default class Tablo extends Component {
          <div className="header">
             { limitSetter }
             { exportButton }
+            { header || null }
          </div>
       );
 
@@ -324,8 +326,14 @@ export default class Tablo extends Component {
             );
          }
 
+         const rowClass = (column.className && column.filterable) ?
+            `${column.className} filtering` :
+            (column.className ? column.className :
+               (column.filterable ? "filtering" : null)
+            );
+
          return (
-            <th key={index} className={column.className} style={column.width ? { width: column.width } : {}}>
+            <th key={index} className={rowClass} style={column.width ? { width: column.width } : {}}>
                { content }
             </th>
          );
@@ -375,7 +383,7 @@ export default class Tablo extends Component {
 
    render() {
 
-      const { id } = this.props;
+      const { id, noPaging } = this.props;
       const { columns, sort, trimmed, page, limit } = this.state;
 
       const items = trimmed.slice(page * limit, (page + 1) * limit);
@@ -394,7 +402,7 @@ export default class Tablo extends Component {
 
                   { this.renderFooter(columns) }
                </tbody>
-               { this.renderPaging() }
+               { noPaging ? null : this.renderPaging() }
             </table>
          </div>
       );

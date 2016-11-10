@@ -81,7 +81,7 @@ export default class Filter extends Component {
       }
 
       return (
-         <div className="head filtering" style={{ position: "relative" }}>
+         <div className={`head${display ? " filtering" : ""}`} style={{ position: "relative" }}>
             <div className="head-text" onClick={() => this.setState({ display: true })}>
                <input
                   type="text"
@@ -94,8 +94,7 @@ export default class Filter extends Component {
                   disabled={true}
                />
             </div>
-            { content }
-            { sortIcon }
+            { content || sortIcon }
          </div>
       );
    }

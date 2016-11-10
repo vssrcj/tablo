@@ -38,6 +38,9 @@
   border: none;
   background: inherit;
 }
+.tablo th.filtering {
+   padding-left: 9px;
+}
 .tablo tbody tr:not(.tablo--aggregates) {
   border-bottom: 1px solid #e0e0e0;
 }

@@ -144,7 +144,7 @@ var Filter = function (_Component) {
 
          return _react2.default.createElement(
             "div",
-            { className: "head", style: { position: "relative" } },
+            { className: "head" + (display ? " filtering" : ""), style: { position: "relative" } },
             _react2.default.createElement(
                "div",
                { className: "head-text", onClick: function onClick() {
@@ -157,8 +157,7 @@ var Filter = function (_Component) {
                   disabled: true
                })
             ),
-            content,
-            sortIcon
+            content || sortIcon
          );
       }
    }]);
