@@ -323,14 +323,15 @@ var _initialiseProps = function _initialiseProps() {
       );
    };
 
-   this.renderExportButton = function (items) {
+   this.renderExportButton = function () {
       var name = _this2.props.name;
+      var items = _this2.state.trimmed;
 
       return name && items.length > 0 ? _react2.default.createElement(
          "button",
          { onClick: function onClick() {
                var result = confirm("Are you sure you want to export this table to an Excel spreadsheet?");
-               if (result) (0, _utils.exportTable)(items, _this2.state.columns, name);
+               if (result) (0, _utils.exportTable)(_this2.state.trimmed, _this2.state.columns, name);
             }, className: "export" },
          "Export"
       ) : null;
@@ -357,7 +358,7 @@ var _initialiseProps = function _initialiseProps() {
 
 
       var limitSetter = _this2.renderLimitSetter(items);
-      var exportButton = _this2.renderExportButton(items);
+      var exportButton = _this2.renderExportButton();
 
       if (limitSetter || exportButton || header) return _react2.default.createElement(
          "div",
@@ -487,7 +488,7 @@ var _initialiseProps = function _initialiseProps() {
    };
 
    this.renderFooter = function (columns) {
-      var items = _this2.props.items;
+      var items = _this2.state.trimmed;
 
       if (columns && columns.some(function (c) {
          return c.sum != null;

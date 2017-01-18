@@ -66,7 +66,7 @@ var filterItems = exports.filterItems = function filterItems(items, allColumns) 
             }
          } else {
 
-            search = search.toLowerCase();
+            search = search ? search.toLowerCase() : "";
 
             if (typeof val === "boolean") {
                if (val) {

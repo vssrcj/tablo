@@ -361,7 +361,7 @@ export default class Tablo extends Component {
    );
 
    renderFooter = columns => {
-      const { items } = this.props;
+      const { trimmed: items } = this.state;
       if(columns && columns.some(c => c.sum != null)) {
          return (
             <tr key={-1} className="tablo--aggregates">
