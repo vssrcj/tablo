@@ -359,7 +359,7 @@ var _initialiseProps = function _initialiseProps() {
       var limitSetter = _this2.renderLimitSetter(items);
       var exportButton = _this2.renderExportButton(items);
 
-      if (limitSetter || exportButton) return _react2.default.createElement(
+      if (limitSetter || exportButton || header) return _react2.default.createElement(
          "div",
          { className: "header" },
          limitSetter,

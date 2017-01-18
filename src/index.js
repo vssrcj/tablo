@@ -203,12 +203,12 @@ export default class Tablo extends Component {
       );
    };
 
-   renderExportButton = items => {
-      const { name } = this.props;
+   renderExportButton = () => {
+      const { props: { name }, state: { trimmed: items } } = this;
       return name && items.length > 0 ?
          <button onClick={() => {
             const result = confirm("Are you sure you want to export this table to an Excel spreadsheet?");
-            if(result) exportTable(items, this.state.columns, name);
+            if(result) exportTable(this.state.trimmed, this.state.columns, name);
          }} className="export">Export</button> :
          null;
    };
@@ -230,12 +230,12 @@ export default class Tablo extends Component {
 
    renderHeader = () => {
 
-      const { items, header } = this.props;
+      const { props: { items, header } } = this;
 
       const limitSetter = this.renderLimitSetter(items);
-      const exportButton = this.renderExportButton(items);
+      const exportButton = this.renderExportButton();
 
-      if(limitSetter || exportButton) return (
+      if(limitSetter || exportButton || header) return (
          <div className="header">
             { limitSetter }
             { exportButton }
